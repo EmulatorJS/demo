@@ -110,8 +110,8 @@
             loadJSON("https://cdn.emulatorjs.org/versions.json", function(response) {
                 const version_select = document.getElementById("version-select");
                 var versions = JSON.parse(response);
-                addOptions(version_select, versions.releases);
-                addOptions(version_select, versions.versions);
+                addOptions(version_select, versions.releases, versions.default);
+                addOptions(version_select, versions.versions, versions.default);
                 version_select.onchange = () => {
                     localStorage.setItem("version", version_select[version_select.selectedIndex].textContent);
                     window.cdn = "https://cdn.emulatorjs.org/" + version_select[version_select.selectedIndex].value + "data/";
@@ -217,14 +217,14 @@
                 window.EJS_biosUrl = "";
                 window.EJS_gameUrl = url;
                 window.EJS_core = core;
-                window.EJS_pathtodata = (window.cdn) ? window.cdn : "https://cdn.emulatorjs.org/latest/data/";
+                window.EJS_pathtodata = (window.cdn) ? window.cdn : "https://cdn.emulatorjs.org/stable/data/";
                 window.EJS_startOnLoaded = true;
                 window.EJS_AdUrl = "https://ads.emulatorjs.org/";
                 window.EJS_ready = function() {
                     detectAdBlock("data:text/html;base64,PGh0bWw+PHN0eWxlPiNhZGJsb2Nre2JhY2tncm91bmQtY29sb3I6cmdiYSgwLDAsMCwuOCk7cG9zaXRpb246Zml4ZWQ7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTt0b3A6MDtsZWZ0OjA7ei1pbmRleDoxMDAwO3RleHQtYWxpZ246Y2VudGVyO2NvbG9yOiNmZmZ9Ym9keSxodG1se2JhY2tncm91bmQtY29sb3I6dHJhbnNwYXJlbnR9PC9zdHlsZT48Ym9keSBzdHlsZT0ibWFyZ2luOjAiPjxkaXYgaWQ9ImFkYmxvY2siPjxoMT5IaSBBZGJsb2NrIFVzZXIhPC9oMT48cD5BZHMgb24gdGhpcyBwYWdlIG1heSBjb21lIGFuZCBnbyBkZXBlbmRpbmcgb24gaG93IG1hbnkgcGVvcGxlIGFyZSBmdW5kaW5nIHRoaXMgcHJvamVjdC48YnI+WW91IGNhbiBoZWxwIGZ1bmQgdGhpcyBwcm9qZWN0IG9uPGEgaHJlZj0iaHR0cHM6Ly9wYXRyZW9uLmNvbS9FbXVsYXRvckpTIj5wYXRyZW9uPC9hPjwvcD48L2Rpdj48L2JvZHk+PC9odG1sPg==");
                 }
                 
-                script.src = (window.cdn) ? window.cdn + "loader.js" : "https://cdn.emulatorjs.org/latest/data/";
+                script.src = (window.cdn) ? window.cdn + "loader.js" : "https://cdn.emulatorjs.org/stable/data/loader.js";
                 document.body.appendChild(script);
             }
 
@@ -261,7 +261,7 @@
                 xobj.send();  
             }
 
-            function addOptions(select, options) {
+            function addOptions(select, options, default_option) {
                 for (const version in options) {
                     const option = document.createElement("option");
                     option.value = options[version];
@@ -269,7 +269,7 @@
                     if (localStorage.getItem("version") && localStorage.getItem("version") == version) {
                         option.selected = true;
                         window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
-                    } else if (version.includes("latest")) {
+                    } else if (version.includes(default_option)) {
                         option.selected = true;
                         window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
                     }

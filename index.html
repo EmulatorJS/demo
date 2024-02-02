@@ -147,11 +147,15 @@
         <div id="popup">
             <div class="content">
                 <h1>Settings</h1>
-                <p>Coming soon...</p>
+                <p id="offline-status">Offline Satus: CHECKING</p>
                 <button onclick="closeSettings()">Close</button>
             </div>
         </div>
         <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("sw.js");
+                //document.querySelector('#offline-status').innerHTML = "Offline Satus: READY";
+            };
             loadJSON("https://cdn.emulatorjs.org/versions.json", function(response) {
                 const version_select = document.getElementById("version-select");
                 var versions = JSON.parse(response);

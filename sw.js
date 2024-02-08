@@ -1,9 +1,14 @@
 const CACHE_NAME = "offline-demo";
 const OFFLINE_FILES = [
     "index.html",
-    "favicon.ico",
-    "img/logo-light.png",
     "404.html",
+    "favicon.ico",
+    "manifest.json",
+    "img/icon.png",
+    "img/logo.png",
+    "img/logo-light.png",
+    "img/screenshot.png",
+    "img/mobile_screenshot.png",
     "https://cdn.emulatorjs.org/versions.json"
 ];
 
@@ -38,6 +43,8 @@ self.addEventListener("fetch", (event) => {
                 var url = requestURL.pathname;
                 if (url === "/") {
                     url = "index.html";
+                } else if (url === "/versions"){
+                    url = "https://cdn.emulatorjs.org/versions.json";
                 } else {
                     url = url.slice(1);
                 }

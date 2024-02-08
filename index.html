@@ -2,8 +2,11 @@
 <html>
     <head>
         <title>EmulatorJS | Demo</title>
-        <link rel = icon href = favicon.ico sizes = "16x16 32x32 48x48 64x64" type = image/vnd.microsoft.icon>
-        <meta name = viewport content = "width = device-width, initial-scale = 1">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="apple-touch-icon" href="img/icon.png" />
+        <link rel="manifest" href="manifest.json" />
         <style>
             body, html {
                 height: 100%;
@@ -129,6 +132,33 @@
                 max-height: 80%;
                 overflow: auto;
             }
+            #popup .title, #popup .options p{
+                display: flex;
+                align-items: center;
+            }
+            #popup .options p {
+                margin: 1em 0;
+                font-size: 18px;
+            }
+            #popup .title h1 {
+                margin: 0 0 0.3em;
+                font-size: 48px;
+            }
+            #popup .options button {
+                width: auto;
+                padding: 0 0.5em;
+                font-weight: bold;
+                margin: 0 0.5em;
+                font-size: 14px;
+                border-radius: 0.4em;
+            }
+            #popup .bottom {
+                display: flex;
+                justify-content: flex-end;
+            }
+            #saved-version {
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -141,31 +171,61 @@
             Drag ROM file or click here
         </div>
         <div id="version">
-            <select id="version-select"></select>
+            <select id="version-select">
+                <option>Offline (reload page)</option>
+            </select>
             <button id="settings" onclick="openSettings()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
         </div>
         <div id="popup">
             <div class="content">
-                <h1>Settings</h1>
-                <p id="offline-status">Offline Satus: CHECKING</p>
-                <button onclick="closeSettings()">Close</button>
+                <div class="title">
+                    <h1>Settings</h1>
+                </div>
+                <div class="options">
+                    <p id="offline-status">Offline Satus: CHECKING</p>
+                    <p id="saved-version">Saved Version: 0</p>
+                    <p>Install PWA: <button onclick="installpwa()">Install</button></p>
+                </div>
+                <div class="bottom">
+                    <button onclick="closeSettings()">Close</button>
+                </div>
             </div>
         </div>
         <script>
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker.register("sw.js");
-                //document.querySelector('#offline-status').innerHTML = "Offline Satus: READY";
             };
-            loadJSON("https://cdn.emulatorjs.org/versions.json", function(response) {
+            var beforeInstallPrompt = null;
+            window.addEventListener("beforeinstallprompt", eventHandler, errorHandler);
+            function eventHandler(event){
+                beforeInstallPrompt = event;        
+            }
+            function errorHandler(e){
+                console.log('error: ' + e);
+            }
+            function installpwa() {
+                if (beforeInstallEvent) beforeInstallPrompt.prompt();
+            }
+            try {
+                loadJSON("/versions", function(response){ loadVersions(response)});
+                document.getElementById("offline-status").textContent = "Offline Satus: READY";
+                document.getElementById("saved-version").style.display = "block";
+                document.getElementById("saved-version").textContent = "Saved Version: " + localStorage.getItem("version");
+            } catch (e) {
+                loadJSON("https://cdn.emulatorjs.org/versions.json", function(response){ loadVersions(response)});
+                document.getElementById("offline-status").textContent = "Offline Satus: NOT INSTALLED";
+            }
+            function loadVersions(response){
                 const version_select = document.getElementById("version-select");
                 var versions = JSON.parse(response);
-                addOptions(version_select, versions.releases, versions.default);
+                version_select.innerHTML = "";
+                addOptions(version_select, versions.releases, versions.default, versions.github);
                 addOptions(version_select, versions.versions, versions.default);
                 version_select.onchange = () => {
                     localStorage.setItem("version", version_select[version_select.selectedIndex].textContent);
                     window.cdn = "https://cdn.emulatorjs.org/" + version_select[version_select.selectedIndex].value + "data/";
                 }
-            });
+            }
             input.onchange = async () => {
                 const url = new Blob([input.files[0]])
                 const parts = input.files[0].name.split(".")
@@ -307,14 +367,18 @@
                         callback(xobj.responseText);
                     }
                 };
-                xobj.send();  
+                xobj.send();
             }
 
-            function addOptions(select, options, default_option) {
+            function addOptions(select, options, default_option, github) {
                 for (const version in options) {
                     const option = document.createElement("option");
                     option.value = options[version];
-                    option.textContent = version;
+                    if (version == "stable"){
+                        option.textContent = "stable ("+github+")";
+                    } else {
+                        option.textContent 
+                    }
                     if (localStorage.getItem("version") && localStorage.getItem("version") == version) {
                         option.selected = true;
                         window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";

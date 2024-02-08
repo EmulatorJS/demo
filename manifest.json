@@ -23,8 +23,15 @@
     ],
     "icons": [
       {
+        "src": "/img/logo.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      },
+      {
         "src": "/img/icon.png",
-        "type": "image/png", "sizes": "489x489"
+        "sizes": "489x489",
+        "type": "image/png",
+        "purpose": "maskable"
       }
     ]
   }

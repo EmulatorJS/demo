@@ -43,7 +43,7 @@ self.addEventListener("fetch", (event) => {
                 var url = requestURL.pathname;
                 if (url === "/") {
                     url = "index.html";
-                } else if (url === "/versions"){
+                } else if (url === "/versions") {
                     url = "https://cdn.emulatorjs.org/versions.json";
                 } else {
                     url = url.slice(1);

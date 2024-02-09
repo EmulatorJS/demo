@@ -133,7 +133,7 @@
                 max-height: 80%;
                 overflow: auto;
             }
-            #popup .title, #popup .options p{
+            #popup .title, #popup .options p {
                 display: flex;
                 align-items: center;
             }
@@ -156,9 +156,23 @@
             #popup .bottom {
                 display: flex;
                 justify-content: flex-end;
+                align-items: center;
+                margin-top: 1em;
             }
             #saved-version {
                 display: none;
+            }
+            #installbox {
+                display: inline-flex;
+                align-items: baseline;
+            }
+            #installboxtext {
+                margin-top: 0 !important;
+            }
+            button:disabled {
+                background-color: #666;
+                color: #aaa;
+                cursor: not-allowed;
             }
         </style>
     </head>
@@ -185,7 +199,7 @@
                 <div class="options">
                     <p id="offline-status">Offline Satus: CHECKING</p>
                     <p id="saved-version">Saved Version: 0</p>
-                    <p>Install PWA: <button onclick="installpwa()">Install</button></p>
+                    <div id="installbox"><p id="installboxtext">Install PWA:</p> <button id="install">Install</button></div>
                 </div>
                 <div class="bottom">
                     <button onclick="closeSettings()">Close</button>
@@ -196,17 +210,6 @@
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker.register("sw.js");
             };
-            var beforeInstallPrompt = null;
-            window.addEventListener("beforeinstallprompt", eventHandler, errorHandler);
-            function eventHandler(event){
-                beforeInstallPrompt = event;        
-            }
-            function errorHandler(e){
-                console.log('error: ' + e);
-            }
-            function installpwa() {
-                if (beforeInstallEvent) beforeInstallPrompt.prompt();
-            }
             try {
                 loadJSON("/versions", function(response){ loadVersions(response)});
                 document.getElementById("offline-status").textContent = "Offline Satus: READY";
@@ -393,11 +396,53 @@
 
             function openSettings() {
                 document.getElementById("popup").style.display = "flex";
+                checkinstall();
             }
 
             function closeSettings() {
                 document.getElementById("popup").style.display = "none";
             }
+
+            let installPrompt = null;
+            const installButton = document.querySelector("#install");
+            const installBox = document.querySelector("#installbox");
+            const installBoxText = document.querySelector("#installboxtext");
+
+            window.addEventListener("beforeinstallprompt", (event) => {
+                event.preventDefault();
+                installPrompt = event;
+                installBox.style.display = "block";
+                installButton.disabled = false;
+                checkinstall();
+            });
+            installButton.addEventListener("click", async () => {
+                if (!installPrompt) {
+                    return;
+                }
+                const result = await installPrompt.prompt();
+                console.log(`Install prompt was: ${result.outcome}`);
+                installPrompt = null;
+                installBox.style.display = "block";
+                checkinstall();
+            });
+            function checkinstall(overide) {
+                if (window.matchMedia('(display-mode: standalone)').matches || overide) {
+                    installButton.textContent = "Installed";
+                    installButton.disabled = true;
+                    installButton.style.display = "inline";
+                    installBoxText.innerHTML = "Install PWA: ";
+                }else{
+                    installButton.style.display = "none";
+                    installBoxText.innerHTML = "PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.";
+                }
+            }
+            document.addEventListener('visibilitychange', function() {
+                window.matchMedia('(display-mode: standalone)').addListener(event => {
+                    if (event.matches) {
+                        checkinstall(true);
+                    }
+                });
+            });
         </script>
     </body>
 </html>

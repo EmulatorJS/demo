@@ -261,13 +261,15 @@
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker.register("sw.js");
             };
-            try {
-                loadJSON("/versions", function(response){ loadVersions(response)});
-                document.getElementById("offline-status").textContent = "Offline Satus: READY";
-            } catch (e) {
-                loadJSON("https://cdn.emulatorjs.org/versions.json", function(response){ loadVersions(response)});
-                document.getElementById("offline-status").textContent = "Offline Satus: NOT INSTALLED";
-            }
+            loadJSON("/versions", function(response){ 
+                if(response == null){
+                    loadJSON("https://cdn.emulatorjs.org/versions.json", function(response){ loadVersions(response)});
+                    document.getElementById("offline-status").textContent = "Offline Satus: NOT INSTALLED";
+                } else {
+                    loadVersions(response);
+                    document.getElementById("offline-status").textContent = "Offline Satus: READY";
+                }
+            });
             function loadVersions(response){
                 const version_select = document.getElementById("version-select");
                 var versions = JSON.parse(response);
@@ -411,17 +413,24 @@
                 }
             }
 
-            function loadJSON(url, callback) {   
+            function loadJSON(url, callback) {
                 var xobj = new XMLHttpRequest();
-                    xobj.overrideMimeType("application/json");
+                xobj.overrideMimeType("application/json");
                 xobj.open('GET', url, true);
+
                 xobj.onreadystatechange = function () {
-                    if (xobj.readyState == 4 && xobj.status == "200") {
-                        callback(xobj.responseText);
+                    if (xobj.readyState == 4) {
+                        if (xobj.status == 200) {
+                            callback(xobj.responseText);
+                        } else {
+                            callback(null);
+                        }
                     }
                 };
+
                 xobj.send();
             }
+
 
             function addOptions(select, options, default_option, github) {
                 for (const version in options) {
@@ -502,7 +511,7 @@
                             }
                         });
                     }
-                    installBoxText.innerHTML = "PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.";
+                    installBoxText.innerHTML = "PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.<br>Note: PWA's are not supported in Incognito/Private mode.";
                 }
                 
             }

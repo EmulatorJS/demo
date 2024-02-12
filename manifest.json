@@ -2,7 +2,7 @@
     "name": "EmulatorJS Demo",
     "short_name": "EmulatorJS",
     "start_url": "/",
-    "id": "/",
+    "id": "org.emulatorjs.demo",
     "scope": "./",
     "display": "standalone",
     "background_color": "#000",

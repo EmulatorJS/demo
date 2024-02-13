@@ -8,7 +8,7 @@
     "background_color": "#000",
     "theme_color": "#1AAFFF",
     "orientation": "any",
-    "description": "EmulatorJS is a browser-based emulator using RetroArch cores.",
+    "description": "EmulatorJS is a frontend for RetroArch in the web browser.",
     "screenshots": [
       {
         "src": "/img/screenshot.png",

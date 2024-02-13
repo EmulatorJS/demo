@@ -38,20 +38,24 @@ self.addEventListener("fetch", (event) => {
                 }
                 return res;
             } catch (e) {
-                const cache = await caches.open(CACHE_NAME);
                 const requestURL = new URL(event.request.url);
                 var url = requestURL.pathname;
-                if (url === "/") {
-                    url = "index.html";
-                } else if (url === "/versions") {
-                    url = "https://cdn.emulatorjs.org/versions.json";
+                if(requestURL.hostname == "cdn.emulatorjs.org"){   
+                    return await fetch(event.request)
                 } else {
-                    url = url.slice(1);
+                    const cache = await caches.open(CACHE_NAME);
+                    if (url === "/") {
+                        url = "index.html";
+                    } else if (url === "/versions") {
+                        url = "https://cdn.emulatorjs.org/versions.json";
+                    } else {
+                        url = url.slice(1);
+                    }
+                    if (!OFFLINE_FILES.includes(url)) {
+                        url = "404.html";
+                    }
+                    return await cache.match(url);
                 }
-                if (!OFFLINE_FILES.includes(url)) {
-                    url = "404.html";
-                }
-                return await cache.match(url);
             }
         })()
     );

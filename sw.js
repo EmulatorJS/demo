@@ -40,7 +40,7 @@ self.addEventListener("fetch", (event) => {
             } catch (e) {
                 const requestURL = new URL(event.request.url);
                 var url = requestURL.pathname;
-                if(requestURL.hostname == "cdn.emulatorjs.org"){   
+                if (requestURL.hostname === "cdn.emulatorjs.org") {   
                     return await fetch(event.request)
                 } else {
                     const cache = await caches.open(CACHE_NAME);

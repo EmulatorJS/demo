@@ -244,7 +244,7 @@
                     <h1>Settings</h1>
                 </div>
                 <div class="options">
-                    <p id="offline-status">Offline Satus: CHECKING</p>
+                    <p id="offline-status">Offline Status: CHECKING</p>
                     <p>Offline Cores will be avilable soon.</p>
                     <p class="hide">Remove All Saved Versions: <button id="remove-version" onclick="removeallsaved()">Remove All</button></p>
                     <div id="installbox"><p id="installboxtext">Install PWA:</p> <button id="install">Install</button></div>
@@ -262,10 +262,10 @@
             loadJSON("/versions", function(response){ 
                 if(response == null){
                     loadJSON("https://cdn.emulatorjs.org/versions.json", function(response){ loadVersions(response)});
-                    document.getElementById("offline-status").textContent = "Offline Satus: NOT INSTALLED";
+                    document.getElementById("offline-status").textContent = "Offline Status: NOT INSTALLED";
                 } else {
                     loadVersions(response);
-                    document.getElementById("offline-status").textContent = "Offline Satus: READY";
+                    document.getElementById("offline-status").textContent = "Offline Status: READY";
                 }
             });
             function loadVersions(response){

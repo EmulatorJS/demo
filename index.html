@@ -417,8 +417,8 @@
                 xobj.open('GET', url, true);
 
                 xobj.onreadystatechange = function () {
-                    if (xobj.readyState == 4) {
-                        if (xobj.status == 200) {
+                    if (xobj.readyState === 4) {
+                        if (xobj.status === 200) {
                             callback(xobj.responseText);
                         } else {
                             callback(null);
@@ -439,7 +439,7 @@
                     } else {
                         option.textContent = version;
                     }
-                    if (localStorage.getItem("version") && localStorage.getItem("version") == version) {
+                    if (localStorage.getItem("version") && localStorage.getItem("version") === version) {
                         option.selected = true;
                         window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
                     } else if (version.includes(default_option)) {

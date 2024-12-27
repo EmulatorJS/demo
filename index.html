@@ -233,10 +233,6 @@
                 cursor: not-allowed;
             }
 
-            .hide {
-                display: none !important;
-            }
-
             .offline-cores {
                 margin: 1em 0;
                 font-size: 18px;
@@ -252,7 +248,6 @@
             }
         </style>
     </head>
-
     <body>
         <div id="top">
             <h1>EmulatorJS Demo</h1>
@@ -266,20 +261,9 @@
             <select id="version-select">
                 <option value="stable">Loading...</option>
             </select>
-            <button id="download" class="hide" onclick="downloadversion()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                    <path
-                        d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708" />
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                    <path
-                        d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 4.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708" />
-                </svg>
-            </button>
             <button id="settings" onclick="openSettings()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                    <path
-                        d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
                 </svg>
             </button>
         </div>
@@ -290,19 +274,13 @@
                 </div>
                 <div class="options">
                     <p id="offline-status">Offline Status: CHECKING</p>
-                    <div class="offline-cores">
-                        Offline Cores will only use the stable release. Stable cores will
-                        auto cache on use.<br />Select cores to cache:
+                    <div class="offline-cores">Offline Cores will only use the stable release.
+                        <br>Stable cores will auto cache on use. Select cores to cache:
                         <form id="cores-form"></form>
                         <br />
                         <button onclick="cacheListCores()">Cache Selected Cores</button>
+                        <button id="remove-version" onclick="removeallsaved()">Remove All</button>
                     </div>
-                    <p class="hide">
-                        Remove All Saved Versions:
-                        <button id="remove-version" onclick="removeallsaved()">
-                            Remove All
-                        </button>
-                    </p>
                     <div id="installbox">
                         <p id="installboxtext">Install PWA:</p>
                         <button id="install">Install</button>
@@ -316,18 +294,13 @@
         <div class="popup-overlay"></div>
         <script>
             if ("serviceWorker" in navigator) {
-                const req = navigator.serviceWorker
-                    .register("/sw.js")
+                const req = navigator.serviceWorker.register("/sw.js")
                     .then((registration) => {
-                        console.log(
-                            "Service Worker registered with scope:",
-                            registration.scope
-                        );
+                        console.log("Service Worker registered with scope:", registration.scope);
                     })
                     .catch((error) => {
                         console.log("Service Worker registration failed:", error);
                     });
-    
                 navigator.serviceWorker.addEventListener("message", (event) => {
                     if (event.data.type === "CACHE_UPDATE") {
                         savedCDNFiles(event.data.url);
@@ -335,22 +308,20 @@
                     }
                 });
             }
-    
+
             const corePath = "https://cdn.emulatorjs.org/stable/data/cores/";
             loadJSON("/versions", (response) => {
                 if (!response) {
                     loadJSON("https://cdn.emulatorjs.org/versions.json", (resp) =>
                         loadVersions(resp)
                     );
-                    document.getElementById("offline-status").textContent =
-                        "Offline Status: NOT INSTALLED";
+                    document.getElementById("offline-status").textContent = "Offline Status: NOT INSTALLED";
                 } else {
                     loadVersions(response);
-                    document.getElementById("offline-status").textContent =
-                        "Offline Status: READY";
+                    document.getElementById("offline-status").textContent = "Offline Status: READY";
                 }
             });
-    
+
             loadJSON(corePath + "cores.json", (response) => {
                 const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
                 const cores = JSON.parse(response);
@@ -368,20 +339,18 @@
                     document.getElementById("cores-form").appendChild(label);
                 }
             });
-    
+
             function savedCDNFiles(url) {
                 const cachedFiles =
                     JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
                 cachedFiles.push(url);
                 localStorage.setItem("cachedCDNFiles", JSON.stringify(cachedFiles));
             }
-    
+
             function cacheCore() {
                 const files = JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
                 const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
-                const cores = files
-                    .filter((item) => item.endsWith(".json"))
-                    .map((item) => item.split("/").pop().split(".")[0]);
+                const cores = files.filter((item) => item.endsWith(".json")).map((item) => item.split("/").pop().split(".")[0]);
                 const urlsToCache = [];
                 for (core of cores) {
                     if (cacheCores.includes(core)) {
@@ -399,7 +368,7 @@
                     localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
                 }
             }
-    
+
             function cacheListCores() {
                 const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
                 const cores = document.getElementsByName("core");
@@ -432,7 +401,15 @@
                 localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
                 closeSettings();
             }
-    
+
+            function removeallsaved() {
+                const cores = document.getElementsByName("core");
+                for (const core of cores) {
+                    core.checked = false;
+                }
+                cacheListCores()
+            }
+
             function cacheUrls(urls) {
                 if (navigator.serviceWorker.controller) {
                     navigator.serviceWorker.controller.postMessage({
@@ -442,7 +419,7 @@
                 }
                 urls.forEach(savedCDNFiles);
             }
-    
+
             function removeUrls(urls) {
                 if (navigator.serviceWorker.controller) {
                     navigator.serviceWorker.controller.postMessage({
@@ -451,56 +428,32 @@
                     });
                 }
             }
-    
+
             function loadVersions(response) {
                 const version_select = document.getElementById("version-select");
                 var versions = JSON.parse(response);
                 version_select.innerHTML = "";
-                addOptions(
-                    version_select,
-                    versions.releases,
-                    versions.default,
-                    versions.github
-                );
+                addOptions(version_select, versions.releases, versions.default, versions.github);
                 addOptions(version_select, versions.versions, versions.default);
                 version_select.addEventListener("change", () => {
-                    localStorage.setItem(
-                        "version",
-                        version_select[version_select.selectedIndex].textContent
-                    );
-                    window.cdn =
-                        "https://cdn.emulatorjs.org/" +
-                        version_select[version_select.selectedIndex].value +
-                        "data/";
+                    localStorage.setItem("version", version_select[version_select.selectedIndex].textContent);
+                    window.cdn = "https://cdn.emulatorjs.org/" + version_select[version_select.selectedIndex].value + "data/";
                 });
             }
-    
+
             input.addEventListener("change", async () => {
                 const url = URL.createObjectURL(new Blob([input.files[0]]));
                 const parts = input.files[0].name.split(".");
-    
                 const core = await (async (ext) => {
                     if (["fds", "nes", "unif", "unf"].includes(ext)) return "nes";
-    
-                    if (
-                        ["smc", "fig", "sfc", "gd3", "gd7", "dx2", "bsx", "swc"].includes(ext)
-                    )
-                        return "snes";
-    
+                    if (["smc", "fig", "sfc", "gd3", "gd7", "dx2", "bsx", "swc"].includes(ext)) return "snes";
                     if (["z64", "n64"].includes(ext)) return "n64";
-    
                     if (["pce"].includes(ext)) return "pce";
-    
                     if (["ngp", "ngc"].includes(ext)) return "ngp";
-    
                     if (["ws", "wsc"].includes(ext)) return "ws";
-    
                     if (["col", "cv"].includes(ext)) return "coleco";
-    
                     if (["d64"].includes(ext)) return "vice_x64";
-    
                     if (["nds", "gba", "gb", "z64", "n64"].includes(ext)) return ext;
-    
                     return await new Promise((resolve) => {
                         const cores = {
                             "Nintendo 64": "n64",
@@ -509,7 +462,7 @@
                             "Nintendo DS": "nds",
                             "Nintendo Entertainment System": "nes",
                             "Super Nintendo Entertainment System": "snes",
-                            PlayStation: "psx",
+                            "PlayStation": "psx",
                             "Virtual Boy": "vb",
                             "Sega Mega Drive": "segaMD",
                             "Sega Master System": "segaMS",
@@ -525,37 +478,36 @@
                             "NEC PC-FX": "pcfx",
                             "SNK NeoGeo Pocket (Color)": "ngp",
                             "Bandai WonderSwan (Color)": "ws",
-                            ColecoVision: "coleco",
+                            "ColecoVision": "coleco",
                             "Commodore 64": "vice_x64",
                             "PlayStation Portable": "psp",
                         };
                         const button = document.createElement("button");
                         const select = document.createElement("select");
-    
+
                         for (const type in cores) {
                             const option = document.createElement("option");
-    
                             option.value = cores[type];
                             option.textContent = type;
                             select.appendChild(option);
                         }
-    
+
                         button.onclick = () => resolve(select[select.selectedIndex].value);
                         button.textContent = "Load game";
                         box.innerHTML = "";
-    
+
                         box.appendChild(select);
                         box.appendChild(button);
                     });
                 })(parts.pop());
-    
+
                 const div = document.createElement("div");
                 const sub = document.createElement("div");
                 const script = document.createElement("script");
-    
+
                 sub.id = "game";
                 div.id = "display";
-    
+
                 const top = document.getElementById("top");
                 const version = document.getElementById("version");
                 top.remove();
@@ -563,9 +515,9 @@
                 box.remove();
                 div.appendChild(sub);
                 document.body.appendChild(div);
-    
+
                 const cdn = window.cdn || "https://cdn.emulatorjs.org/stable/data/";
-    
+
                 window.EJS_player = "#game";
                 window.EJS_gameName = parts.shift();
                 window.EJS_biosUrl = "";
@@ -579,24 +531,20 @@
                     window.EJS_threads = true;
                 }
                 window.EJS_ready = function () {
-                    detectAdBlock(
-                        "data:text/html;base64,PGh0bWw+PHN0eWxlPiNhZGJsb2Nre2JhY2tncm91bmQtY29sb3I6cmdiYSgwLDAsMCwuOCk7cG9zaXRpb246Zml4ZWQ7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTt0b3A6MDtsZWZ0OjA7ei1pbmRleDoxMDAwO3RleHQtYWxpZ246Y2VudGVyO2NvbG9yOiNmZmZ9Ym9keSxodG1se2JhY2tncm91bmQtY29sb3I6dHJhbnNwYXJlbnR9YSB7Y29sb3I6ICMwMGFmZTQ7fTwvc3R5bGU+PGJvZHkgc3R5bGU9Im1hcmdpbjowIj48ZGl2IGlkPSJhZGJsb2NrIj48aDE+SGkgQWRibG9jayBVc2VyITwvaDE+PHA+QWRzIG9uIHRoaXMgcGFnZSBtYXkgY29tZSBhbmQgZ28gZGVwZW5kaW5nIG9uIGhvdyBtYW55IHBlb3BsZSBhcmUgZnVuZGluZyB0aGlzIHByb2plY3QuPGJyPllvdSBjYW4gaGVscCBmdW5kIHRoaXMgcHJvamVjdCBvbiA8YSBocmVmPSJodHRwczovL3BhdHJlb24uY29tL0VtdWxhdG9ySlMiPnBhdHJlb248L2E+PC9wPjwvZGl2PjwvYm9keT48L2h0bWw+"
-                    );
+                    detectAdBlock("data:text/html;base64,PGh0bWw+PHN0eWxlPiNhZGJsb2Nre2JhY2tncm91bmQtY29sb3I6cmdiYSgwLDAsMCwuOCk7cG9zaXRpb246Zml4ZWQ7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTt0b3A6MDtsZWZ0OjA7ei1pbmRleDoxMDAwO3RleHQtYWxpZ246Y2VudGVyO2NvbG9yOiNmZmZ9Ym9keSxodG1se2JhY2tncm91bmQtY29sb3I6dHJhbnNwYXJlbnR9YSB7Y29sb3I6ICMwMGFmZTQ7fTwvc3R5bGU+PGJvZHkgc3R5bGU9Im1hcmdpbjowIj48ZGl2IGlkPSJhZGJsb2NrIj48aDE+SGkgQWRibG9jayBVc2VyITwvaDE+PHA+QWRzIG9uIHRoaXMgcGFnZSBtYXkgY29tZSBhbmQgZ28gZGVwZW5kaW5nIG9uIGhvdyBtYW55IHBlb3BsZSBhcmUgZnVuZGluZyB0aGlzIHByb2plY3QuPGJyPllvdSBjYW4gaGVscCBmdW5kIHRoaXMgcHJvamVjdCBvbiA8YSBocmVmPSJodHRwczovL3BhdHJlb24uY29tL0VtdWxhdG9ySlMiPnBhdHJlb248L2E+PC9wPjwvZGl2PjwvYm9keT48L2h0bWw+");
                 };
-    
+
                 script.src = cdn + "loader.js";
                 document.body.appendChild(script);
             });
-    
+
             box.ondragover = () => box.setAttribute("drag", true);
             box.ondragleave = () => box.removeAttribute("drag");
-    
+
             function detectAdBlock(url) {
                 let adBlockEnabled = false;
                 try {
-                    const adframe = document.querySelector(
-                        'iframe[src="' + window.EJS_AdUrl + '"]'
-                    );
+                    const adframe = document.querySelector('iframe[src="' + window.EJS_AdUrl + '"]');
                     var adpage = adframe.contentWindow.document;
                     window.EJS_AdUrl = adframe.src;
                     if (!adpage) {
@@ -609,7 +557,7 @@
                     window.EJS_adBlocked(url);
                 }
             }
-    
+
             function loadJSON(url, callback) {
                 var xobj = new XMLHttpRequest();
                 xobj.overrideMimeType("application/json");
@@ -625,7 +573,7 @@
                 };
                 xobj.send();
             }
-    
+
             function addOptions(select, options, default_option, github) {
                 for (const version in options) {
                     const option = document.createElement("option");
@@ -635,10 +583,7 @@
                     } else {
                         option.textContent = version;
                     }
-                    if (
-                        localStorage.getItem("version") &&
-                        localStorage.getItem("version") === version
-                    ) {
+                    if (localStorage.getItem("version") && localStorage.getItem("version") === version) {
                         option.selected = true;
                         window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
                     } else if (version.includes(default_option)) {
@@ -648,24 +593,24 @@
                     select.appendChild(option);
                 }
             }
-    
+
             function openSettings() {
                 document.getElementById("popup-settings").classList.add("show");
                 if (localStorage.getItem("pwa") == "false") {
                     checkinstall();
                 }
             }
-    
+
             function closeSettings() {
                 document.getElementById("popup-settings").classList.remove("show");
             }
-    
+
             let installPrompt = null;
             const installButton = document.querySelector("#install");
             const installBox = document.querySelector("#installbox");
             const installBoxText = document.querySelector("#installboxtext");
             localStorage.setItem("pwa", "false");
-    
+
             window.addEventListener("beforeinstallprompt", (event) => {
                 event.preventDefault();
                 installPrompt = event;
@@ -674,7 +619,7 @@
                 installButton.disabled = false;
                 console.log("Supported");
             });
-    
+
             installButton.addEventListener("click", async () => {
                 if (!installPrompt) {
                     return;
@@ -683,14 +628,10 @@
                 console.log(`Install prompt was: ${result.outcome}`);
                 installPrompt = null;
             });
-    
+
             function checkinstall(overide) {
                 console.log("Checking install");
-                if (
-                    navigator.userAgent.includes("Firefox") ||
-                    (navigator.userAgent.includes("OPR") &&
-                        !navigator.userAgent.includes("Mobile"))
-                ) {
+                if (navigator.userAgent.includes("Firefox") || (navigator.userAgent.includes("OPR") && !navigator.userAgent.includes("Mobile"))) {
                     installButton.style.display = "none";
                     installBoxText.innerHTML = "PWA's are not supported on this browser.";
                     return;
@@ -702,12 +643,8 @@
                     installBoxText.innerHTML = "Install PWA: ";
                 } else {
                     installButton.style.display = "none";
-                    if (
-                        navigator.userAgent.includes("Safari") &&
-                        !navigator.userAgent.includes("Chrome")
-                    ) {
-                        installBoxText.innerHTML =
-                            "PWA's are supported on this browser, but prompt is not supported.<br> Please install manually";
+                    if (navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome")) {
+                        installBoxText.innerHTML = "PWA's are supported on this browser, but prompt is not supported.<br> Please install manually";
                         return;
                     }
                     if ("getInstalledRelatedApps" in navigator) {
@@ -718,8 +655,7 @@
                             }
                         });
                     }
-                    installBoxText.innerHTML =
-                        "PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.<br>Note: PWA's are not supported in Incognito/Private mode.";
+                    installBoxText.innerHTML = "PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.<br>Note: PWA's are not supported in Incognito/Private mode.";
                 }
             }
             document.addEventListener("visibilitychange", function () {

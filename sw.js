@@ -90,14 +90,9 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
         (async () => {
             const requestURL = new URL(event.request.url);
-            let url =
-                requestURL.hostname === "cdn.emulatorjs.org"
-                    ? event.request.url
-                    : requestURL.pathname;
+            let url = requestURL.hostname === "cdn.emulatorjs.org" ? event.request.url : requestURL.pathname;
             const cache = await caches.open(CACHE_NAME);
-            if (
-                event.request.url.startsWith("https://cdn.emulatorjs.org/stable/data/")
-            ) {
+            if (event.request.url.startsWith("https://cdn.emulatorjs.org/stable/data/")) {
                 const cachedResponse = await cache.match(event.request);
                 if (cachedResponse) {
                     return cachedResponse;
@@ -111,17 +106,11 @@ self.addEventListener("fetch", (event) => {
                 cacheStatus = false;
                 return networkResponse;
             }
-            if (
-                requestURL.hostname === "cdn.emulatorjs.org" &&
-                !OFFLINE_FILES.includes(event.request.url)
-            ) {
+            if (requestURL.hostname === "cdn.emulatorjs.org" && !OFFLINE_FILES.includes(event.request.url)) {
                 return await fetch(event.request);
             }
             try {
-                const req =
-                    url === "/versions"
-                        ? "https://cdn.emulatorjs.org/versions.json"
-                        : event.request;
+                const req = url === "/versions" ? "https://cdn.emulatorjs.org/versions.json" : event.request;
                 const res = await fetch(req);
                 if (!res.status.toString().startsWith("2")) {
                     throw new Error("status code not ok");

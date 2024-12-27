@@ -1,258 +1,257 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>EmulatorJS | Demo</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon" />
-	<link rel="apple-touch-icon" href="img/icon.png" />
-	<link rel="manifest" href="manifest.json" />
-	<meta name="theme-color" content="#000" />
-	<style>
-		body,
-		html {
-			height: 100%;
-			background-color: black;
-			color: white;
-		}
+	<head>
+		<title>EmulatorJS | Demo</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon" />
+		<link rel="apple-touch-icon" href="img/icon.png" />
+		<link rel="manifest" href="manifest.json" />
+		<meta name="theme-color" content="#000" />
+		<style>
+			body,
+			html {
+				height: 100%;
+				background-color: black;
+				color: white;
+			}
 
-		body {
-			margin: 0;
-			overflow: hidden;
-		}
+			body {
+				margin: 0;
+				overflow: hidden;
+			}
 
-		body,
-		#box,
-		#top {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-		}
+			body,
+			#box,
+			#top {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+			}
 
-		#box {
-			color: #aaa;
-			height: 20em;
-			width: 30em;
-			max-width: 80%;
-			max-height: 80%;
-			background-color: #333;
-			border-radius: 0.4em;
-			border: 2px solid #555;
-			position: relative;
-			flex-direction: column;
-			transition-duration: 0.2s;
-			overflow: hidden;
-			font-family: monospace;
-			font-weight: bold;
-			font-size: 20px;
-			margin: 5px;
-			padding: 10px;
-			text-align: center;
-		}
+			#box {
+				color: #aaa;
+				height: 20em;
+				width: 30em;
+				max-width: 80%;
+				max-height: 80%;
+				background-color: #333;
+				border-radius: 0.4em;
+				border: 2px solid #555;
+				position: relative;
+				flex-direction: column;
+				transition-duration: 0.2s;
+				overflow: hidden;
+				font-family: monospace;
+				font-weight: bold;
+				font-size: 20px;
+				margin: 5px;
+				padding: 10px;
+				text-align: center;
+			}
 
-		#box:hover,
-		#box[drag] {
-			border-color: #38f;
-			color: #ddd;
-		}
+			#box:hover,
+			#box[drag] {
+				border-color: #38f;
+				color: #ddd;
+			}
 
-		#input {
-			cursor: pointer;
-			position: absolute;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			opacity: 0;
-		}
+			#input {
+				cursor: pointer;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+			}
 
-		#display {
-			width: 100%;
-			height: 100%;
-		}
+			#display {
+				width: 100%;
+				height: 100%;
+			}
 
-		select,
-		button {
-			padding: 0 0.4em;
-			margin: 0.5em 0.1em;
-			width: 15em;
-			max-width: 100%;
-			font-family: monospace;
-			font-weight: bold;
-			font-size: 16px;
-			background-color: #444;
-			color: #aaa;
-			border-radius: 0.4em;
-			border: 1px solid #555;
-			cursor: pointer;
-			transition-duration: 0.2s;
-			vertical-align: top;
-			height: 2.5em;
-		}
+			select,
+			button {
+				padding: 0 0.4em;
+				margin: 0.5em 0.1em;
+				width: 15em;
+				max-width: 100%;
+				font-family: monospace;
+				font-weight: bold;
+				font-size: 16px;
+				background-color: #444;
+				color: #aaa;
+				border-radius: 0.4em;
+				border: 1px solid #555;
+				cursor: pointer;
+				transition-duration: 0.2s;
+				vertical-align: top;
+				height: 2.5em;
+			}
 
-		select:hover,
-		button:hover {
-			background-color: #666;
-			color: #ddd;
-		}
+			select:hover,
+			button:hover {
+				background-color: #666;
+				color: #ddd;
+			}
 
-		.logo {
-			width: 130px;
-			height: 130px;
-			filter: drop-shadow(0 0 10px white);
-		}
+			.logo {
+				width: 130px;
+				height: 130px;
+				filter: drop-shadow(0 0 10px white);
+			}
 
-		#top,
-		#version {
-			margin: 5px;
-		}
+			#top,
+			#version {
+				margin: 5px;
+			}
 
-		#version button {
-			fill: #aaa;
-			width: auto;
-			padding: 0.2em 0.3em;
-			text-align: center;
-			margin: 0.5em 0.1em;
-		}
+			#version button {
+				fill: #aaa;
+				width: auto;
+				padding: 0.2em 0.3em;
+				text-align: center;
+				margin: 0.5em 0.1em;
+			}
 
-		#version svg {
-			margin-top: 0.05em;
-			margin-left: 0.05em;
-			width: 1.8em;
-		}
+			#version svg {
+				margin-top: 0.05em;
+				margin-left: 0.05em;
+				width: 1.8em;
+			}
 
-		.popup {
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			width: 100%;
-			height: 100%;
-			z-index: 2000;
-			visibility: hidden;
-			-webkit-backface-visibility: hidden;
-			-moz-backface-visibility: hidden;
-			backface-visibility: hidden;
-		}
+			.popup {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				width: 100%;
+				height: 100%;
+				z-index: 2000;
+				visibility: hidden;
+				-webkit-backface-visibility: hidden;
+				-moz-backface-visibility: hidden;
+				backface-visibility: hidden;
+			}
 
-		.popup .content {
-			background-color: #333;
-			border-radius: 0.4em;
-			border: 2px solid #555;
-			padding: 1em;
-			max-width: 80%;
-			max-height: 80%;
-			min-width: 30%;
-			width: min-content;
-			position: fixed;
-		}
+			.popup .content {
+				background-color: #333;
+				border-radius: 0.4em;
+				border: 2px solid #555;
+				padding: 1em;
+				max-width: 80%;
+				max-height: 80%;
+				min-width: 30%;
+				width: min-content;
+				position: fixed;
+			}
 
-		.show {
-			visibility: visible;
-		}
+			.show {
+				visibility: visible;
+			}
 
-		.popup-overlay {
-			position: fixed;
-			width: 100%;
-			height: 100%;
-			visibility: hidden;
-			top: 0;
-			left: 0;
-			z-index: 1000;
-			opacity: 0;
-			background-color: rgba(0, 0, 0, 0.5);
-			-webkit-transition: all 0.3s;
-			transition: all 0.3s;
-		}
+			.popup-overlay {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				visibility: hidden;
+				top: 0;
+				left: 0;
+				z-index: 1000;
+				opacity: 0;
+				background-color: rgba(0, 0, 0, 0.5);
+				-webkit-transition: all 0.3s;
+				transition: all 0.3s;
+			}
 
-		.show~.popup-overlay {
-			opacity: 1;
-			visibility: visible;
-		}
+			.show~.popup-overlay {
+				opacity: 1;
+				visibility: visible;
+			}
 
-		.popup-animate .content {
-			-webkit-transform: translateX(-50%) translateY(-50%) scale(0.7);
-			-ms-transform: translateX(-50%) translateY(-50%) scale(0.7);
-			transform: translateX(-50%) translateY(-50%) scale(0.7);
-			opacity: 0;
-			-webkit-transition: all 0.3s;
-			transition: all 0.3s;
-		}
+			.popup-animate .content {
+				-webkit-transform: translateX(-50%) translateY(-50%) scale(0.7);
+				-ms-transform: translateX(-50%) translateY(-50%) scale(0.7);
+				transform: translateX(-50%) translateY(-50%) scale(0.7);
+				opacity: 0;
+				-webkit-transition: all 0.3s;
+				transition: all 0.3s;
+			}
 
-		.show.popup-animate .content {
-			-webkit-transform: translateX(-50%) translateY(-50%) scale(1);
-			-ms-transform: translateX(-50%) translateY(-50%) scale(1);
-			transform: translateX(-50%) translateY(-50%) scale(1);
-			opacity: 1;
-		}
+			.show.popup-animate .content {
+				-webkit-transform: translateX(-50%) translateY(-50%) scale(1);
+				-ms-transform: translateX(-50%) translateY(-50%) scale(1);
+				transform: translateX(-50%) translateY(-50%) scale(1);
+				opacity: 1;
+			}
 
-		.popup .title,
-		.popup .options p {
-			display: flex;
-			align-items: center;
-		}
+			.popup .title,
+			.popup .options p {
+				display: flex;
+				align-items: center;
+			}
 
-		.popup .options p {
-			margin: 1em 0;
-			font-size: 18px;
-		}
+			.popup .options p {
+				margin: 1em 0;
+				font-size: 18px;
+			}
 
-		.popup .title h1 {
-			margin: 0 0 0.3em;
-			font-size: 48px;
-		}
+			.popup .title h1 {
+				margin: 0 0 0.3em;
+				font-size: 48px;
+			}
 
-		.popup .options button {
-			width: auto;
-			padding: 0 0.5em;
-			font-weight: bold;
-			margin: 0 0.5em;
-			font-size: 14px;
-			border-radius: 0.4em;
-		}
+			.popup .options button {
+				width: auto;
+				padding: 0 0.5em;
+				font-weight: bold;
+				margin: 0 0.5em;
+				font-size: 14px;
+				border-radius: 0.4em;
+			}
 
-		.popup .bottom {
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-			margin-top: 1em;
-		}
+			.popup .bottom {
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+				margin-top: 1em;
+			}
 
-		#installbox {
-			display: inline-flex;
-			align-items: baseline;
-		}
+			#installbox {
+				display: inline-flex;
+				align-items: baseline;
+			}
 
-		#installboxtext {
-			margin-top: 0 !important;
-		}
+			#installboxtext {
+				margin-top: 0 !important;
+			}
 
-		button:disabled {
-			background-color: #666;
-			color: #aaa;
-			cursor: not-allowed;
-		}
+			button:disabled {
+				background-color: #666;
+				color: #aaa;
+				cursor: not-allowed;
+			}
 
-		.hide {
-			display: none !important;
-		}
+			.hide {
+				display: none !important;
+			}
 
-		.offline-cores {
-			margin: 1em 0;
-			font-size: 18px;
-		}
+			.offline-cores {
+				margin: 1em 0;
+				font-size: 18px;
+			}
 
-		#cores-form {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-start;
-			max-height: 160px;
-			overflow-y: auto;
-			padding: 10px 0;
-		}
-	</style>
-</head>
-
+			#cores-form {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				max-height: 160px;
+				overflow-y: auto;
+				padding: 10px 0;
+			}
+		</style>
+	</head>
 <body>
 	<div id="top">
 		<h1>EmulatorJS Demo</h1>
@@ -314,433 +313,433 @@
 		</div>
 	</div>
 	<div class="popup-overlay"></div>
-	<script>
-		if ("serviceWorker" in navigator) {
-			const req = navigator.serviceWorker
-				.register("/sw.js")
-				.then((registration) => {
-					console.log(
-						"Service Worker registered with scope:",
-						registration.scope
-					);
-				})
-				.catch((error) => {
-					console.log("Service Worker registration failed:", error);
-				});
-
-			navigator.serviceWorker.addEventListener("message", (event) => {
-				if (event.data.type === "CACHE_UPDATE") {
-					savedCDNFiles(event.data.url);
-					cacheCore();
-				}
-			});
-		}
-		
-		const corePath = "https://cdn.emulatorjs.org/stable/data/cores/";
-		loadJSON("/versions", (response) => {
-			if (!response) {
-				loadJSON("https://cdn.emulatorjs.org/versions.json", (resp) =>
-					loadVersions(resp)
+</body>
+<script>
+	if ("serviceWorker" in navigator) {
+		const req = navigator.serviceWorker
+			.register("/sw.js")
+			.then((registration) => {
+				console.log(
+					"Service Worker registered with scope:",
+					registration.scope
 				);
-				document.getElementById("offline-status").textContent =
-					"Offline Status: NOT INSTALLED";
-			} else {
-				loadVersions(response);
-				document.getElementById("offline-status").textContent =
-					"Offline Status: READY";
+			})
+			.catch((error) => {
+				console.log("Service Worker registration failed:", error);
+			});
+
+		navigator.serviceWorker.addEventListener("message", (event) => {
+			if (event.data.type === "CACHE_UPDATE") {
+				savedCDNFiles(event.data.url);
+				cacheCore();
 			}
 		});
+	}
 
-		loadJSON(corePath + "cores.json", (response) => {
-			const cacheCores =
-				JSON.parse(localStorage.getItem("cachedCores")) || [];
-			const cores = JSON.parse(response);
-			for (const core of cores) {
-				const label = document.createElement("label");
-				const input = document.createElement("input");
-				input.type = "checkbox";
-				input.name = "core";
-				input.value = core.name;
-				if (cacheCores.includes(core.name)) {
-					input.checked = true;
-				}
-				label.appendChild(input);
-				label.appendChild(document.createTextNode(core.name));
-				document.getElementById("cores-form").appendChild(label);
-			}
-		});
-
-		function savedCDNFiles(url) {
-			const cachedFiles =
-				JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
-			cachedFiles.push(url);
-			localStorage.setItem("cachedCDNFiles", JSON.stringify(cachedFiles));
-		}
-
-		function cacheCore() {
-			const files = JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
-			const cacheCores =
-				JSON.parse(localStorage.getItem("cachedCores")) || [];
-			const cores = files
-				.filter((item) => item.endsWith(".json"))
-				.map((item) => item.split("/").pop().split(".")[0]);
-			const urlsToCache = [];
-			for (core of cores) {
-				if (cacheCores.includes(core)) {
-					continue;
-				}
-				urlsToCache.push(corePath + "reports/" + core + ".json");
-				urlsToCache.push(corePath + core + "-wasm.data");
-				urlsToCache.push(corePath + core + "-thread-wasm.data");
-				urlsToCache.push(corePath + core + "-legacy-wasm.data");
-				urlsToCache.push(corePath + core + "-thread-legacy-wasm.data");
-				cacheCores.push(core);
-			}
-			if (urlsToCache.length > 0) {
-				cacheUrls(urlsToCache);
-				localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
-			}
-		}
-
-		function cacheListCores() {
-			const cacheCores =
-				JSON.parse(localStorage.getItem("cachedCores")) || [];
-			const cores = document.getElementsByName("core");
-			const urlsToCache = [];
-			const urlsToRemove = [];
-			for (const core of cores) {
-				if (core.checked && !cacheCores.includes(core.value)) {
-					urlsToCache.push(corePath + "reports/" + core + ".json");
-					urlsToCache.push(corePath + core.value + "-wasm.data");
-					urlsToCache.push(corePath + core.value + "-thread-wasm.data");
-					urlsToCache.push(corePath + core.value + "-legacy-wasm.data");
-					urlsToCache.push(
-						corePath + core.value + "-thread-legacy-wasm.data"
-					);
-					cacheCores.push(core.value);
-				}
-				if (!core.checked && cacheCores.includes(core.value)) {
-					urlsToRemove.push(corePath + "reports/" + core + ".json");
-					urlsToRemove.push(corePath + core.value + "-wasm.data");
-					urlsToRemove.push(corePath + core.value + "-thread-wasm.data");
-					urlsToRemove.push(corePath + core.value + "-legacy-wasm.data");
-					urlsToRemove.push(
-						corePath + core.value + "-thread-legacy-wasm.data"
-					);
-					cacheCores.splice(cacheCores.indexOf(core.value), 1);
-				}
-			}
-			if (urlsToCache.length > 0) {
-				cacheUrls(urlsToCache);
-			}
-			if (urlsToRemove.length > 0) {
-				removeUrls(urlsToRemove);
-			}
-			localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
-			closeSettings();
-		}
-
-		function cacheUrls(urls) {
-			if (navigator.serviceWorker.controller) {
-				navigator.serviceWorker.controller.postMessage({
-					type: "CACHE_URLS",
-					urls: urls,
-				});
-			}
-			urls.forEach(savedCDNFiles);
-		}
-
-		function removeUrls(urls) {
-			if (navigator.serviceWorker.controller) {
-				navigator.serviceWorker.controller.postMessage({
-					type: "REMOVE_URLS",
-					urls: urls,
-				});
-			}
-		}
-
-		function loadVersions(response) {
-			const version_select = document.getElementById("version-select");
-			var versions = JSON.parse(response);
-			version_select.innerHTML = "";
-			addOptions(
-				version_select,
-				versions.releases,
-				versions.default,
-				versions.github
+	const corePath = "https://cdn.emulatorjs.org/stable/data/cores/";
+	loadJSON("/versions", (response) => {
+		if (!response) {
+			loadJSON("https://cdn.emulatorjs.org/versions.json", (resp) =>
+				loadVersions(resp)
 			);
-			addOptions(version_select, versions.versions, versions.default);
-			version_select.addEventListener("change", () => {
-				localStorage.setItem(
-					"version",
-					version_select[version_select.selectedIndex].textContent
+			document.getElementById("offline-status").textContent =
+				"Offline Status: NOT INSTALLED";
+		} else {
+			loadVersions(response);
+			document.getElementById("offline-status").textContent =
+				"Offline Status: READY";
+		}
+	});
+
+	loadJSON(corePath + "cores.json", (response) => {
+		const cacheCores =
+			JSON.parse(localStorage.getItem("cachedCores")) || [];
+		const cores = JSON.parse(response);
+		for (const core of cores) {
+			const label = document.createElement("label");
+			const input = document.createElement("input");
+			input.type = "checkbox";
+			input.name = "core";
+			input.value = core.name;
+			if (cacheCores.includes(core.name)) {
+				input.checked = true;
+			}
+			label.appendChild(input);
+			label.appendChild(document.createTextNode(core.name));
+			document.getElementById("cores-form").appendChild(label);
+		}
+	});
+
+	function savedCDNFiles(url) {
+		const cachedFiles =
+			JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
+		cachedFiles.push(url);
+		localStorage.setItem("cachedCDNFiles", JSON.stringify(cachedFiles));
+	}
+
+	function cacheCore() {
+		const files = JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
+		const cacheCores =
+			JSON.parse(localStorage.getItem("cachedCores")) || [];
+		const cores = files
+			.filter((item) => item.endsWith(".json"))
+			.map((item) => item.split("/").pop().split(".")[0]);
+		const urlsToCache = [];
+		for (core of cores) {
+			if (cacheCores.includes(core)) {
+				continue;
+			}
+			urlsToCache.push(corePath + "reports/" + core + ".json");
+			urlsToCache.push(corePath + core + "-wasm.data");
+			urlsToCache.push(corePath + core + "-thread-wasm.data");
+			urlsToCache.push(corePath + core + "-legacy-wasm.data");
+			urlsToCache.push(corePath + core + "-thread-legacy-wasm.data");
+			cacheCores.push(core);
+		}
+		if (urlsToCache.length > 0) {
+			cacheUrls(urlsToCache);
+			localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
+		}
+	}
+
+	function cacheListCores() {
+		const cacheCores =
+			JSON.parse(localStorage.getItem("cachedCores")) || [];
+		const cores = document.getElementsByName("core");
+		const urlsToCache = [];
+		const urlsToRemove = [];
+		for (const core of cores) {
+			if (core.checked && !cacheCores.includes(core.value)) {
+				urlsToCache.push(corePath + "reports/" + core + ".json");
+				urlsToCache.push(corePath + core.value + "-wasm.data");
+				urlsToCache.push(corePath + core.value + "-thread-wasm.data");
+				urlsToCache.push(corePath + core.value + "-legacy-wasm.data");
+				urlsToCache.push(
+					corePath + core.value + "-thread-legacy-wasm.data"
 				);
-				window.cdn =
-					"https://cdn.emulatorjs.org/" +
-					version_select[version_select.selectedIndex].value +
-					"data/";
+				cacheCores.push(core.value);
+			}
+			if (!core.checked && cacheCores.includes(core.value)) {
+				urlsToRemove.push(corePath + "reports/" + core + ".json");
+				urlsToRemove.push(corePath + core.value + "-wasm.data");
+				urlsToRemove.push(corePath + core.value + "-thread-wasm.data");
+				urlsToRemove.push(corePath + core.value + "-legacy-wasm.data");
+				urlsToRemove.push(
+					corePath + core.value + "-thread-legacy-wasm.data"
+				);
+				cacheCores.splice(cacheCores.indexOf(core.value), 1);
+			}
+		}
+		if (urlsToCache.length > 0) {
+			cacheUrls(urlsToCache);
+		}
+		if (urlsToRemove.length > 0) {
+			removeUrls(urlsToRemove);
+		}
+		localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
+		closeSettings();
+	}
+
+	function cacheUrls(urls) {
+		if (navigator.serviceWorker.controller) {
+			navigator.serviceWorker.controller.postMessage({
+				type: "CACHE_URLS",
+				urls: urls,
 			});
 		}
+		urls.forEach(savedCDNFiles);
+	}
 
-		input.addEventListener("change", async () => {
-			const url = URL.createObjectURL(new Blob([input.files[0]]));
-			const parts = input.files[0].name.split(".");
+	function removeUrls(urls) {
+		if (navigator.serviceWorker.controller) {
+			navigator.serviceWorker.controller.postMessage({
+				type: "REMOVE_URLS",
+				urls: urls,
+			});
+		}
+	}
 
-			const core = await (async (ext) => {
-				if (["fds", "nes", "unif", "unf"].includes(ext)) return "nes";
-
-				if (
-					["smc", "fig", "sfc", "gd3", "gd7", "dx2", "bsx", "swc"].includes(
-						ext
-					)
-				)
-					return "snes";
-
-				if (["z64", "n64"].includes(ext)) return "n64";
-
-				if (["pce"].includes(ext)) return "pce";
-
-				if (["ngp", "ngc"].includes(ext)) return "ngp";
-
-				if (["ws", "wsc"].includes(ext)) return "ws";
-
-				if (["col", "cv"].includes(ext)) return "coleco";
-
-				if (["d64"].includes(ext)) return "vice_x64";
-
-				if (["nds", "gba", "gb", "z64", "n64"].includes(ext)) return ext;
-
-				return await new Promise((resolve) => {
-					const cores = {
-						"Nintendo 64": "n64",
-						"Nintendo Game Boy": "gb",
-						"Nintendo Game Boy Advance": "gba",
-						"Nintendo DS": "nds",
-						"Nintendo Entertainment System": "nes",
-						"Super Nintendo Entertainment System": "snes",
-						PlayStation: "psx",
-						"Virtual Boy": "vb",
-						"Sega Mega Drive": "segaMD",
-						"Sega Master System": "segaMS",
-						"Sega CD": "segaCD",
-						"Atari Lynx": "lynx",
-						"Sega 32X": "sega32x",
-						"Atari Jaguar": "jaguar",
-						"Sega Game Gear": "segaGG",
-						"Sega Saturn": "segaSaturn",
-						"Atari 7800": "atari7800",
-						"Atari 2600": "atari2600",
-						"NEC TurboGrafx-16/SuperGrafx/PC Engine": "pce",
-						"NEC PC-FX": "pcfx",
-						"SNK NeoGeo Pocket (Color)": "ngp",
-						"Bandai WonderSwan (Color)": "ws",
-						ColecoVision: "coleco",
-						"Commodore 64": "vice_x64",
-						"PlayStation Portable": "psp",
-					};
-					const button = document.createElement("button");
-					const select = document.createElement("select");
-
-					for (const type in cores) {
-						const option = document.createElement("option");
-
-						option.value = cores[type];
-						option.textContent = type;
-						select.appendChild(option);
-					}
-
-					button.onclick = () => resolve(select[select.selectedIndex].value);
-					button.textContent = "Load game";
-					box.innerHTML = "";
-
-					box.appendChild(select);
-					box.appendChild(button);
-				});
-			})(parts.pop());
-
-			const div = document.createElement("div");
-			const sub = document.createElement("div");
-			const script = document.createElement("script");
-
-			sub.id = "game";
-			div.id = "display";
-
-			const top = document.getElementById("top");
-			const version = document.getElementById("version");
-			top.remove();
-			version.remove();
-			box.remove();
-			div.appendChild(sub);
-			document.body.appendChild(div);
-
-			const cdn = window.cdn || "https://cdn.emulatorjs.org/stable/data/";
-
-			window.EJS_player = "#game";
-			window.EJS_gameName = parts.shift();
-			window.EJS_biosUrl = "";
-			window.EJS_gameUrl = url;
-			window.EJS_core = core;
-			window.EJS_pathtodata = cdn;
-			window.EJS_startOnLoaded = true;
-			window.EJS_AdUrl = "https://ads.emulatorjs.org/";
-			window.EJS_videoRotation = 0;
-			if (core === "psp") {
-				window.EJS_threads = true;
-			}
-			window.EJS_ready = function () {
-				detectAdBlock(
-					"data:text/html;base64,PGh0bWw+PHN0eWxlPiNhZGJsb2Nre2JhY2tncm91bmQtY29sb3I6cmdiYSgwLDAsMCwuOCk7cG9zaXRpb246Zml4ZWQ7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTt0b3A6MDtsZWZ0OjA7ei1pbmRleDoxMDAwO3RleHQtYWxpZ246Y2VudGVyO2NvbG9yOiNmZmZ9Ym9keSxodG1se2JhY2tncm91bmQtY29sb3I6dHJhbnNwYXJlbnR9YSB7Y29sb3I6ICMwMGFmZTQ7fTwvc3R5bGU+PGJvZHkgc3R5bGU9Im1hcmdpbjowIj48ZGl2IGlkPSJhZGJsb2NrIj48aDE+SGkgQWRibG9jayBVc2VyITwvaDE+PHA+QWRzIG9uIHRoaXMgcGFnZSBtYXkgY29tZSBhbmQgZ28gZGVwZW5kaW5nIG9uIGhvdyBtYW55IHBlb3BsZSBhcmUgZnVuZGluZyB0aGlzIHByb2plY3QuPGJyPllvdSBjYW4gaGVscCBmdW5kIHRoaXMgcHJvamVjdCBvbiA8YSBocmVmPSJodHRwczovL3BhdHJlb24uY29tL0VtdWxhdG9ySlMiPnBhdHJlb248L2E+PC9wPjwvZGl2PjwvYm9keT48L2h0bWw+"
-				);
-			};
-
-			script.src = cdn + "loader.js";
-			document.body.appendChild(script);
+	function loadVersions(response) {
+		const version_select = document.getElementById("version-select");
+		var versions = JSON.parse(response);
+		version_select.innerHTML = "";
+		addOptions(
+			version_select,
+			versions.releases,
+			versions.default,
+			versions.github
+		);
+		addOptions(version_select, versions.versions, versions.default);
+		version_select.addEventListener("change", () => {
+			localStorage.setItem(
+				"version",
+				version_select[version_select.selectedIndex].textContent
+			);
+			window.cdn =
+				"https://cdn.emulatorjs.org/" +
+				version_select[version_select.selectedIndex].value +
+				"data/";
 		});
+	}
 
-		box.ondragover = () => box.setAttribute("drag", true);
-		box.ondragleave = () => box.removeAttribute("drag");
+	input.addEventListener("change", async () => {
+		const url = URL.createObjectURL(new Blob([input.files[0]]));
+		const parts = input.files[0].name.split(".");
 
-		function detectAdBlock(url) {
-			let adBlockEnabled = false;
-			try {
-				const adframe = document.querySelector(
-					'iframe[src="' + window.EJS_AdUrl + '"]'
-				);
-				var adpage = adframe.contentWindow.document;
-				window.EJS_AdUrl = adframe.src;
-				if (!adpage) {
-					adBlockEnabled = true;
+		const core = await (async (ext) => {
+			if (["fds", "nes", "unif", "unf"].includes(ext)) return "nes";
+
+			if (
+				["smc", "fig", "sfc", "gd3", "gd7", "dx2", "bsx", "swc"].includes(
+					ext
+				)
+			)
+				return "snes";
+
+			if (["z64", "n64"].includes(ext)) return "n64";
+
+			if (["pce"].includes(ext)) return "pce";
+
+			if (["ngp", "ngc"].includes(ext)) return "ngp";
+
+			if (["ws", "wsc"].includes(ext)) return "ws";
+
+			if (["col", "cv"].includes(ext)) return "coleco";
+
+			if (["d64"].includes(ext)) return "vice_x64";
+
+			if (["nds", "gba", "gb", "z64", "n64"].includes(ext)) return ext;
+
+			return await new Promise((resolve) => {
+				const cores = {
+					"Nintendo 64": "n64",
+					"Nintendo Game Boy": "gb",
+					"Nintendo Game Boy Advance": "gba",
+					"Nintendo DS": "nds",
+					"Nintendo Entertainment System": "nes",
+					"Super Nintendo Entertainment System": "snes",
+					PlayStation: "psx",
+					"Virtual Boy": "vb",
+					"Sega Mega Drive": "segaMD",
+					"Sega Master System": "segaMS",
+					"Sega CD": "segaCD",
+					"Atari Lynx": "lynx",
+					"Sega 32X": "sega32x",
+					"Atari Jaguar": "jaguar",
+					"Sega Game Gear": "segaGG",
+					"Sega Saturn": "segaSaturn",
+					"Atari 7800": "atari7800",
+					"Atari 2600": "atari2600",
+					"NEC TurboGrafx-16/SuperGrafx/PC Engine": "pce",
+					"NEC PC-FX": "pcfx",
+					"SNK NeoGeo Pocket (Color)": "ngp",
+					"Bandai WonderSwan (Color)": "ws",
+					ColecoVision: "coleco",
+					"Commodore 64": "vice_x64",
+					"PlayStation Portable": "psp",
+				};
+				const button = document.createElement("button");
+				const select = document.createElement("select");
+
+				for (const type in cores) {
+					const option = document.createElement("option");
+
+					option.value = cores[type];
+					option.textContent = type;
+					select.appendChild(option);
 				}
-			} catch (e) {
+
+				button.onclick = () => resolve(select[select.selectedIndex].value);
+				button.textContent = "Load game";
+				box.innerHTML = "";
+
+				box.appendChild(select);
+				box.appendChild(button);
+			});
+		})(parts.pop());
+
+		const div = document.createElement("div");
+		const sub = document.createElement("div");
+		const script = document.createElement("script");
+
+		sub.id = "game";
+		div.id = "display";
+
+		const top = document.getElementById("top");
+		const version = document.getElementById("version");
+		top.remove();
+		version.remove();
+		box.remove();
+		div.appendChild(sub);
+		document.body.appendChild(div);
+
+		const cdn = window.cdn || "https://cdn.emulatorjs.org/stable/data/";
+
+		window.EJS_player = "#game";
+		window.EJS_gameName = parts.shift();
+		window.EJS_biosUrl = "";
+		window.EJS_gameUrl = url;
+		window.EJS_core = core;
+		window.EJS_pathtodata = cdn;
+		window.EJS_startOnLoaded = true;
+		window.EJS_AdUrl = "https://ads.emulatorjs.org/";
+		window.EJS_videoRotation = 0;
+		if (core === "psp") {
+			window.EJS_threads = true;
+		}
+		window.EJS_ready = function () {
+			detectAdBlock(
+				"data:text/html;base64,PGh0bWw+PHN0eWxlPiNhZGJsb2Nre2JhY2tncm91bmQtY29sb3I6cmdiYSgwLDAsMCwuOCk7cG9zaXRpb246Zml4ZWQ7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTt0b3A6MDtsZWZ0OjA7ei1pbmRleDoxMDAwO3RleHQtYWxpZ246Y2VudGVyO2NvbG9yOiNmZmZ9Ym9keSxodG1se2JhY2tncm91bmQtY29sb3I6dHJhbnNwYXJlbnR9YSB7Y29sb3I6ICMwMGFmZTQ7fTwvc3R5bGU+PGJvZHkgc3R5bGU9Im1hcmdpbjowIj48ZGl2IGlkPSJhZGJsb2NrIj48aDE+SGkgQWRibG9jayBVc2VyITwvaDE+PHA+QWRzIG9uIHRoaXMgcGFnZSBtYXkgY29tZSBhbmQgZ28gZGVwZW5kaW5nIG9uIGhvdyBtYW55IHBlb3BsZSBhcmUgZnVuZGluZyB0aGlzIHByb2plY3QuPGJyPllvdSBjYW4gaGVscCBmdW5kIHRoaXMgcHJvamVjdCBvbiA8YSBocmVmPSJodHRwczovL3BhdHJlb24uY29tL0VtdWxhdG9ySlMiPnBhdHJlb248L2E+PC9wPjwvZGl2PjwvYm9keT48L2h0bWw+"
+			);
+		};
+
+		script.src = cdn + "loader.js";
+		document.body.appendChild(script);
+	});
+
+	box.ondragover = () => box.setAttribute("drag", true);
+	box.ondragleave = () => box.removeAttribute("drag");
+
+	function detectAdBlock(url) {
+		let adBlockEnabled = false;
+		try {
+			const adframe = document.querySelector(
+				'iframe[src="' + window.EJS_AdUrl + '"]'
+			);
+			var adpage = adframe.contentWindow.document;
+			window.EJS_AdUrl = adframe.src;
+			if (!adpage) {
 				adBlockEnabled = true;
 			}
-			if (adBlockEnabled) {
-				window.EJS_adBlocked(url);
-			}
+		} catch (e) {
+			adBlockEnabled = true;
 		}
-
-		function loadJSON(url, callback) {
-			var xobj = new XMLHttpRequest();
-			xobj.overrideMimeType("application/json");
-			xobj.open("GET", url, true);
-			xobj.onreadystatechange = function () {
-				if (xobj.readyState === 4) {
-					if (xobj.status === 200) {
-						callback(xobj.responseText);
-					} else {
-						callback(null);
-					}
-				}
-			};
-			xobj.send();
+		if (adBlockEnabled) {
+			window.EJS_adBlocked(url);
 		}
+	}
 
-		function addOptions(select, options, default_option, github) {
-			for (const version in options) {
-				const option = document.createElement("option");
-				option.value = options[version];
-				if (version == "stable") {
-					option.textContent = "stable (" + github + ")";
+	function loadJSON(url, callback) {
+		var xobj = new XMLHttpRequest();
+		xobj.overrideMimeType("application/json");
+		xobj.open("GET", url, true);
+		xobj.onreadystatechange = function () {
+			if (xobj.readyState === 4) {
+				if (xobj.status === 200) {
+					callback(xobj.responseText);
 				} else {
-					option.textContent = version;
+					callback(null);
 				}
-				if (
-					localStorage.getItem("version") &&
-					localStorage.getItem("version") === version
-				) {
-					option.selected = true;
-					window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
-				} else if (version.includes(default_option)) {
-					option.selected = true;
-					window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
-				}
-				select.appendChild(option);
 			}
-		}
+		};
+		xobj.send();
+	}
 
-		function openSettings() {
-			document.getElementById("popup-settings").classList.add("show");
-			if (localStorage.getItem("pwa") == "false") {
-				checkinstall();
-			}
-		}
-
-		function closeSettings() {
-			document.getElementById("popup-settings").classList.remove("show");
-		}
-
-		let installPrompt = null;
-		const installButton = document.querySelector("#install");
-		const installBox = document.querySelector("#installbox");
-		const installBoxText = document.querySelector("#installboxtext");
-		localStorage.setItem("pwa", "false");
-
-		window.addEventListener("beforeinstallprompt", (event) => {
-			event.preventDefault();
-			installPrompt = event;
-			localStorage.setItem("pwa", "true");
-			installButton.textContent = "Install";
-			installButton.disabled = false;
-			console.log("Supported");
-		});
-
-		installButton.addEventListener("click", async () => {
-			if (!installPrompt) {
-				return;
-			}
-			const result = await installPrompt.prompt();
-			console.log(`Install prompt was: ${result.outcome}`);
-			installPrompt = null;
-		});
-
-		function checkinstall(overide) {
-			console.log("Checking install");
-			if (
-				navigator.userAgent.includes("Firefox") ||
-				(navigator.userAgent.includes("OPR") &&
-					!navigator.userAgent.includes("Mobile"))
-			) {
-				installButton.style.display = "none";
-				installBoxText.innerHTML = "PWA's are not supported on this browser.";
-				return;
-			}
-			if (
-				window.matchMedia("(display-mode: standalone)").matches ||
-				overide
-			) {
-				installButton.textContent = "Installed";
-				installButton.disabled = true;
-				installButton.style.display = "inline";
-				installBoxText.innerHTML = "Install PWA: ";
+	function addOptions(select, options, default_option, github) {
+		for (const version in options) {
+			const option = document.createElement("option");
+			option.value = options[version];
+			if (version == "stable") {
+				option.textContent = "stable (" + github + ")";
 			} else {
-				installButton.style.display = "none";
-				if (
-					navigator.userAgent.includes("Safari") &&
-					!navigator.userAgent.includes("Chrome")
-				) {
-					installBoxText.innerHTML =
-						"PWA's are supported on this browser, but prompt is not supported.<br> Please install manually";
-					return;
-				}
-				if ("getInstalledRelatedApps" in navigator) {
-					navigator.getInstalledRelatedApps().then((relatedApps) => {
-						if (relatedApps.length > 0) {
-							checkinstall(true);
-							return;
-						}
-					});
-				}
-				installBoxText.innerHTML =
-					"PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.<br>Note: PWA's are not supported in Incognito/Private mode.";
+				option.textContent = version;
 			}
+			if (
+				localStorage.getItem("version") &&
+				localStorage.getItem("version") === version
+			) {
+				option.selected = true;
+				window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
+			} else if (version.includes(default_option)) {
+				option.selected = true;
+				window.cdn = "https://cdn.emulatorjs.org/" + option.value + "data/";
+			}
+			select.appendChild(option);
 		}
-		document.addEventListener("visibilitychange", function () {
-			window.matchMedia("(display-mode: standalone)").addListener((event) => {
-				if (event.matches) {
-					checkinstall(true);
-				}
-			});
+	}
+
+	function openSettings() {
+		document.getElementById("popup-settings").classList.add("show");
+		if (localStorage.getItem("pwa") == "false") {
+			checkinstall();
+		}
+	}
+
+	function closeSettings() {
+		document.getElementById("popup-settings").classList.remove("show");
+	}
+
+	let installPrompt = null;
+	const installButton = document.querySelector("#install");
+	const installBox = document.querySelector("#installbox");
+	const installBoxText = document.querySelector("#installboxtext");
+	localStorage.setItem("pwa", "false");
+
+	window.addEventListener("beforeinstallprompt", (event) => {
+		event.preventDefault();
+		installPrompt = event;
+		localStorage.setItem("pwa", "true");
+		installButton.textContent = "Install";
+		installButton.disabled = false;
+		console.log("Supported");
+	});
+
+	installButton.addEventListener("click", async () => {
+		if (!installPrompt) {
+			return;
+		}
+		const result = await installPrompt.prompt();
+		console.log(`Install prompt was: ${result.outcome}`);
+		installPrompt = null;
+	});
+
+	function checkinstall(overide) {
+		console.log("Checking install");
+		if (
+			navigator.userAgent.includes("Firefox") ||
+			(navigator.userAgent.includes("OPR") &&
+				!navigator.userAgent.includes("Mobile"))
+		) {
+			installButton.style.display = "none";
+			installBoxText.innerHTML = "PWA's are not supported on this browser.";
+			return;
+		}
+		if (
+			window.matchMedia("(display-mode: standalone)").matches ||
+			overide
+		) {
+			installButton.textContent = "Installed";
+			installButton.disabled = true;
+			installButton.style.display = "inline";
+			installBoxText.innerHTML = "Install PWA: ";
+		} else {
+			installButton.style.display = "none";
+			if (
+				navigator.userAgent.includes("Safari") &&
+				!navigator.userAgent.includes("Chrome")
+			) {
+				installBoxText.innerHTML =
+					"PWA's are supported on this browser, but prompt is not supported.<br> Please install manually";
+				return;
+			}
+			if ("getInstalledRelatedApps" in navigator) {
+				navigator.getInstalledRelatedApps().then((relatedApps) => {
+					if (relatedApps.length > 0) {
+						checkinstall(true);
+						return;
+					}
+				});
+			}
+			installBoxText.innerHTML =
+				"PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.<br>Note: PWA's are not supported in Incognito/Private mode.";
+		}
+	}
+	document.addEventListener("visibilitychange", function () {
+		window.matchMedia("(display-mode: standalone)").addListener((event) => {
+			if (event.matches) {
+				checkinstall(true);
+			}
 		});
-	</script>
-</body>
+	});
+</script>
 </html>

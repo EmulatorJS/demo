@@ -4,12 +4,13 @@
         <title>EmulatorJS | Demo</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon">
+        <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64" type="image/vnd.microsoft.icon" />
         <link rel="apple-touch-icon" href="img/icon.png" />
         <link rel="manifest" href="manifest.json" />
-        <meta name="theme-color" content="#000"/>
+        <meta name="theme-color" content="#000" />
         <style>
-            body, html {
+            body,
+            html {
                 height: 100%;
                 background-color: black;
                 color: white;
@@ -20,7 +21,9 @@
                 overflow: hidden;
             }
 
-            body, #box, #top {
+            body,
+            #box,
+            #top {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -48,9 +51,10 @@
                 text-align: center;
             }
 
-            #box:hover, #box[drag] {
+            #box:hover,
+            #box[drag] {
                 border-color: #38f;
-                color: #ddd
+                color: #ddd;
             }
 
             #input {
@@ -65,10 +69,11 @@
 
             #display {
                 width: 100%;
-                height: 100%
+                height: 100%;
             }
 
-            select, button {
+            select,
+            button {
                 padding: 0 0.4em;
                 margin: 0.5em 0.1em;
                 width: 15em;
@@ -82,13 +87,14 @@
                 border: 1px solid #555;
                 cursor: pointer;
                 transition-duration: 0.2s;
-                vertical-align:top;
+                vertical-align: top;
                 height: 2.5em;
             }
 
-            select:hover, button:hover {
+            select:hover,
+            button:hover {
                 background-color: #666;
-                color: #ddd
+                color: #ddd;
             }
 
             .logo {
@@ -97,7 +103,8 @@
                 filter: drop-shadow(0 0 10px white);
             }
 
-            #top, #version {
+            #top,
+            #version {
                 margin: 5px;
             }
 
@@ -108,11 +115,13 @@
                 text-align: center;
                 margin: 0.5em 0.1em;
             }
+
             #version svg {
                 margin-top: 0.05em;
                 margin-left: 0.05em;
                 width: 1.8em;
             }
+
             .popup {
                 position: fixed;
                 top: 50%;
@@ -125,6 +134,7 @@
                 -moz-backface-visibility: hidden;
                 backface-visibility: hidden;
             }
+
             .popup .content {
                 background-color: #333;
                 border-radius: 0.4em;
@@ -136,9 +146,11 @@
                 width: min-content;
                 position: fixed;
             }
+
             .show {
                 visibility: visible;
             }
+
             .popup-overlay {
                 position: fixed;
                 width: 100%;
@@ -152,10 +164,12 @@
                 -webkit-transition: all 0.3s;
                 transition: all 0.3s;
             }
-            .show ~ .popup-overlay {
+
+            .show~.popup-overlay {
                 opacity: 1;
                 visibility: visible;
             }
+
             .popup-animate .content {
                 -webkit-transform: translateX(-50%) translateY(-50%) scale(0.7);
                 -ms-transform: translateX(-50%) translateY(-50%) scale(0.7);
@@ -164,24 +178,30 @@
                 -webkit-transition: all 0.3s;
                 transition: all 0.3s;
             }
+
             .show.popup-animate .content {
                 -webkit-transform: translateX(-50%) translateY(-50%) scale(1);
                 -ms-transform: translateX(-50%) translateY(-50%) scale(1);
                 transform: translateX(-50%) translateY(-50%) scale(1);
                 opacity: 1;
             }
-            .popup .title, .popup .options p {
+
+            .popup .title,
+            .popup .options p {
                 display: flex;
                 align-items: center;
             }
+
             .popup .options p {
                 margin: 1em 0;
                 font-size: 18px;
             }
+
             .popup .title h1 {
                 margin: 0 0 0.3em;
                 font-size: 48px;
             }
+
             .popup .options button {
                 width: auto;
                 padding: 0 0.5em;
@@ -190,51 +210,60 @@
                 font-size: 14px;
                 border-radius: 0.4em;
             }
+
             .popup .bottom {
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
                 margin-top: 1em;
             }
+
             #installbox {
                 display: inline-flex;
                 align-items: baseline;
             }
+
             #installboxtext {
                 margin-top: 0 !important;
             }
+
             button:disabled {
                 background-color: #666;
                 color: #aaa;
                 cursor: not-allowed;
             }
-            .hide {
-                display: none !important;
+
+            .offline-cores {
+                margin: 1em 0;
+                font-size: 18px;
+            }
+
+            #cores-form {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                max-height: 160px;
+                overflow-y: auto;
+                padding: 10px 0;
             }
         </style>
     </head>
     <body>
         <div id="top">
             <h1>EmulatorJS Demo</h1>
-            <img src="img/logo-light.png" alt="Logo" class="logo">
+            <img src="img/logo-light.png" alt="Logo" class="logo" />
         </div>
         <div id="box">
-            <input type="file" id="input">
+            <input type="file" id="input" />
             Drag ROM file or click here
         </div>
         <div id="version">
-            <select id="version-select"></select>
-            <button id="download" class="hide" onclick="downloadversion()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708"/>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 16 16">
-                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 4.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708"/>
-                </svg>
-            </button>
+            <select id="version-select">
+                <option value="stable">Loading...</option>
+            </select>
             <button id="settings" onclick="openSettings()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
                 </svg>
             </button>
         </div>
@@ -245,10 +274,20 @@
                 </div>
                 <div class="options">
                     <p id="offline-status">Offline Status: CHECKING</p>
-                    <p>Offline Cores will be available soon.</p>
-                    <p class="hide">Remove All Saved Versions: <button id="remove-version" onclick="removeallsaved()">Remove All</button></p>
-                    <div id="installbox"><p id="installboxtext">Install PWA:</p> <button id="install">Install</button></div>
+                    <div class="offline-cores">Offline Cores will only use the stable release. Latest stable release is: <span id="latest-stable"></span>
+                        <br>Select cores to cache:
+                        <form id="cores-form">
+                            <p>Loading...</p>
+                        </form>
+                        <br />
+                        <button onclick="cacheCores()">Cache/Update Selected</button>
+                        <button onclick="removeAllsCores()">Remove All</button>
                     </div>
+                    <div id="installbox">
+                        <p id="installboxtext">Install PWA:</p>
+                        <button id="install">Install</button>
+                    </div>
+                </div>
                 <div class="bottom">
                     <button onclick="closeSettings()">Close</button>
                 </div>
@@ -257,21 +296,125 @@
         <div class="popup-overlay"></div>
         <script>
             if ("serviceWorker" in navigator) {
-                const req = navigator.serviceWorker.register("sw.js");
-                console.log(req);
-            };
+                const req = navigator.serviceWorker.register("/sw.js")
+                    .then((registration) => {
+                        console.log("Service Worker registered with scope:", registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log("Service Worker registration failed:", error);
+                    });
+            }
+
             loadJSON("/versions", (response) => {
                 if (!response) {
-                    loadJSON("https://cdn.emulatorjs.org/versions.json", resp => loadVersions(resp));
+                    loadJSON("https://cdn.emulatorjs.org/versions.json", (resp) =>
+                        loadVersions(resp)
+                    );
                     document.getElementById("offline-status").textContent = "Offline Status: NOT INSTALLED";
                 } else {
                     loadVersions(response);
                     document.getElementById("offline-status").textContent = "Offline Status: READY";
                 }
             });
+
+            const corePath = "https://cdn.emulatorjs.org/stable/data/cores/";
+
+            function loadCoreList() {
+                loadJSON(corePath + "cores.json", (response) => {
+                    const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
+                    const cores = JSON.parse(response);
+                    document.getElementById("cores-form").innerHTML = "";
+                    for (const core of cores) {
+                        const label = document.createElement("label");
+                        const input = document.createElement("input");
+                        input.type = "checkbox";
+                        input.name = "core";
+                        input.value = core.name;
+                        if (cacheCores.some(arr => arr[0] === core.name)) {
+                            input.checked = true;
+                        }
+                        label.appendChild(input);
+                        const cachedCore = cacheCores.find(arr => arr[0] === core.name);
+                        const additionalText = cachedCore ? ` (${cachedCore[1]})` : "";
+                        label.appendChild(document.createTextNode(core.name + additionalText));
+                        document.getElementById("cores-form").appendChild(label);
+                    }
+                });  
+            }
+
+            function cacheCores() {
+                const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
+                const cores = document.getElementsByName("core");
+                const stable = localStorage.getItem("latest-stable");
+                const urlsToCache = [];
+                const urlsToRemove = [];
+                for (const core of cores) {
+                    const cachedCore = cacheCores.find(arr => arr[0] === core.value);
+                    if (core.checked && (!cachedCore || cachedCore[1] !== stable)) {
+                        urlsToCache.push(corePath + "reports/" + core.value + ".json");
+                        urlsToCache.push(corePath + core.value + "-wasm.data");
+                        urlsToCache.push(corePath + core.value + "-thread-wasm.data");
+                        urlsToCache.push(corePath + core.value + "-legacy-wasm.data");
+                        urlsToCache.push(corePath + core.value + "-thread-legacy-wasm.data");
+                        if (cachedCore) {
+                            cachedCore[1] = stable;
+                        } else {
+                            cacheCores.push([core.value, stable]);
+                        }
+                    }
+                    if (!core.checked && cacheCores.some(arr => arr[0] === core.value)) {
+                        urlsToRemove.push(corePath + "reports/" + core.value + ".json");
+                        urlsToRemove.push(corePath + core.value + "-wasm.data");
+                        urlsToRemove.push(corePath + core.value + "-thread-wasm.data");
+                        urlsToRemove.push(corePath + core.value + "-legacy-wasm.data");
+                        urlsToRemove.push(corePath + core.value + "-thread-legacy-wasm.data");
+                        const index = cacheCores.findIndex(arr => arr[0] === core.value);
+                        if (index !== -1) {
+                            cacheCores.splice(index, 1);
+                        }
+                    }
+                }
+                if (urlsToCache.length > 0) {
+                    cacheUrls(urlsToCache);
+                }
+                if (urlsToRemove.length > 0) {
+                    removeUrls(urlsToRemove);
+                }
+                localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
+                closeSettings();
+            }
+
+            function removeAllsCores() {
+                const cores = document.getElementsByName("core");
+                for (const core of cores) {
+                    core.checked = false;
+                }
+                cacheCores()
+            }
+
+            function cacheUrls(urls) {
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({
+                        type: "CACHE_URLS",
+                        urls: urls,
+                    });
+                }
+            }
+
+            function removeUrls(urls) {
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({
+                        type: "REMOVE_URLS",
+                        urls: urls,
+                    });
+                }
+            }
+
             function loadVersions(response) {
                 const version_select = document.getElementById("version-select");
                 var versions = JSON.parse(response);
+                document.getElementById("latest-stable").textContent = versions.github;
+                localStorage.setItem("latest-stable", versions.github);
                 version_select.innerHTML = "";
                 addOptions(version_select, versions.releases, versions.default, versions.github);
                 addOptions(version_select, versions.versions, versions.default);
@@ -280,39 +423,21 @@
                     window.cdn = "https://cdn.emulatorjs.org/" + version_select[version_select.selectedIndex].value + "data/";
                 });
             }
+
             input.addEventListener("change", async () => {
                 const url = URL.createObjectURL(new Blob([input.files[0]]));
                 const parts = input.files[0].name.split(".");
-
                 const core = await (async (ext) => {
-                    if (["fds", "nes", "unif", "unf"].includes(ext))
-                        return "nes"
-
-                    if (["smc", "fig", "sfc", "gd3", "gd7", "dx2", "bsx", "swc"].includes(ext))
-                        return "snes"
-
-                    if (["z64", "n64"].includes(ext))
-                        return "n64"
-
-                    if (["pce"].includes(ext))
-                        return "pce"
-
-                    if (["ngp", "ngc"].includes(ext))
-                        return "ngp"
-
-                    if (["ws", "wsc"].includes(ext))
-                        return "ws"
-
-                    if (["col", "cv"].includes(ext))
-                        return "coleco"
-
-                    if (["d64"].includes(ext))
-                        return "vice_x64"
-
-                    if (["nds", "gba", "gb", "z64", "n64"].includes(ext))
-                        return ext
-
-                    return await new Promise(resolve => {
+                    if (["fds", "nes", "unif", "unf"].includes(ext)) return "nes";
+                    if (["smc", "fig", "sfc", "gd3", "gd7", "dx2", "bsx", "swc"].includes(ext)) return "snes";
+                    if (["z64", "n64"].includes(ext)) return "n64";
+                    if (["pce"].includes(ext)) return "pce";
+                    if (["ngp", "ngc"].includes(ext)) return "ngp";
+                    if (["ws", "wsc"].includes(ext)) return "ws";
+                    if (["col", "cv"].includes(ext)) return "coleco";
+                    if (["d64"].includes(ext)) return "vice_x64";
+                    if (["nds", "gba", "gb", "z64", "n64"].includes(ext)) return ext;
+                    return await new Promise((resolve) => {
                         const cores = {
                             "Nintendo 64": "n64",
                             "Nintendo Game Boy": "gb",
@@ -332,51 +457,50 @@
                             "Sega Saturn": "segaSaturn",
                             "Atari 7800": "atari7800",
                             "Atari 2600": "atari2600",
+                            "Arcade": "arcade",
                             "NEC TurboGrafx-16/SuperGrafx/PC Engine": "pce",
                             "NEC PC-FX": "pcfx",
                             "SNK NeoGeo Pocket (Color)": "ngp",
                             "Bandai WonderSwan (Color)": "ws",
                             "ColecoVision": "coleco",
                             "Commodore 64": "vice_x64",
-                            "PlayStation Portable": "psp"
-                        }
-
-                        const button = document.createElement("button")
-                        const select = document.createElement("select")
+                            "PlayStation Portable": "psp",
+                        };
+                        const button = document.createElement("button");
+                        const select = document.createElement("select");
 
                         for (const type in cores) {
-                            const option = document.createElement("option")
-
-                            option.value = cores[type]
-                            option.textContent = type
-                            select.appendChild(option)
+                            const option = document.createElement("option");
+                            option.value = cores[type];
+                            option.textContent = type;
+                            select.appendChild(option);
                         }
 
-                        button.onclick = () => resolve(select[select.selectedIndex].value)
-                        button.textContent = "Load game"
-                        box.innerHTML = ""
+                        button.onclick = () => resolve(select[select.selectedIndex].value);
+                        button.textContent = "Load game";
+                        box.innerHTML = "";
 
-                        box.appendChild(select)
-                        box.appendChild(button)
-                    })
-                })(parts.pop())
+                        box.appendChild(select);
+                        box.appendChild(button);
+                    });
+                })(parts.pop());
 
-                const div = document.createElement("div")
-                const sub = document.createElement("div")
-                const script = document.createElement("script")
+                const div = document.createElement("div");
+                const sub = document.createElement("div");
+                const script = document.createElement("script");
 
-                sub.id = "game"
-                div.id = "display"
+                sub.id = "game";
+                div.id = "display";
 
                 const top = document.getElementById("top");
                 const version = document.getElementById("version");
                 top.remove();
                 version.remove();
                 box.remove();
-                div.appendChild(sub)
-                document.body.appendChild(div)
+                div.appendChild(sub);
+                document.body.appendChild(div);
 
-                const cdn = window.cdn || "https://cdn.emulatorjs.org/stable/data/"
+                const cdn = window.cdn || "https://cdn.emulatorjs.org/stable/data/";
 
                 window.EJS_player = "#game";
                 window.EJS_gameName = parts.shift();
@@ -389,10 +513,10 @@
                 if (core === "psp") {
                     window.EJS_threads = true;
                 }
-                window.EJS_ready = function() {
-                    detectAdBlock("data:text/html;base64,PGh0bWw+PHN0eWxlPiNhZGJsb2Nre2JhY2tncm91bmQtY29sb3I6cmdiYSgwLDAsMCwuOCk7cG9zaXRpb246Zml4ZWQ7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTt0b3A6MDtsZWZ0OjA7ei1pbmRleDoxMDAwO3RleHQtYWxpZ246Y2VudGVyO2NvbG9yOiNmZmZ9Ym9keSxodG1se2JhY2tncm91bmQtY29sb3I6dHJhbnNwYXJlbnR9PC9zdHlsZT48Ym9keSBzdHlsZT0ibWFyZ2luOjAiPjxkaXYgaWQ9ImFkYmxvY2siPjxoMT5IaSBBZGJsb2NrIFVzZXIhPC9oMT48cD5BZHMgb24gdGhpcyBwYWdlIG1heSBjb21lIGFuZCBnbyBkZXBlbmRpbmcgb24gaG93IG1hbnkgcGVvcGxlIGFyZSBmdW5kaW5nIHRoaXMgcHJvamVjdC48YnI+WW91IGNhbiBoZWxwIGZ1bmQgdGhpcyBwcm9qZWN0IG9uPGEgaHJlZj0iaHR0cHM6Ly9wYXRyZW9uLmNvbS9FbXVsYXRvckpTIj5wYXRyZW9uPC9hPjwvcD48L2Rpdj48L2JvZHk+PC9odG1sPg==");
-                }
-                
+                window.EJS_ready = function () {
+                    detectAdBlock("data:text/html;base64,PGh0bWw+PHN0eWxlPiNhZGJsb2Nre2JhY2tncm91bmQtY29sb3I6cmdiYSgwLDAsMCwuOCk7cG9zaXRpb246Zml4ZWQ7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTt0b3A6MDtsZWZ0OjA7ei1pbmRleDoxMDAwO3RleHQtYWxpZ246Y2VudGVyO2NvbG9yOiNmZmZ9Ym9keSxodG1se2JhY2tncm91bmQtY29sb3I6dHJhbnNwYXJlbnR9YSB7Y29sb3I6ICMwMGFmZTQ7fTwvc3R5bGU+PGJvZHkgc3R5bGU9Im1hcmdpbjowIj48ZGl2IGlkPSJhZGJsb2NrIj48aDE+SGkgQWRibG9jayBVc2VyITwvaDE+PHA+QWRzIG9uIHRoaXMgcGFnZSBtYXkgY29tZSBhbmQgZ28gZGVwZW5kaW5nIG9uIGhvdyBtYW55IHBlb3BsZSBhcmUgZnVuZGluZyB0aGlzIHByb2plY3QuPGJyPllvdSBjYW4gaGVscCBmdW5kIHRoaXMgcHJvamVjdCBvbiA8YSBocmVmPSJodHRwczovL3BhdHJlb24uY29tL0VtdWxhdG9ySlMiPnBhdHJlb248L2E+PC9wPjwvZGl2PjwvYm9keT48L2h0bWw+");
+                };
+
                 script.src = cdn + "loader.js";
                 document.body.appendChild(script);
             });
@@ -403,7 +527,7 @@
             function detectAdBlock(url) {
                 let adBlockEnabled = false;
                 try {
-                    const adframe = document.querySelector('iframe[src="'+window.EJS_AdUrl+'"]');
+                    const adframe = document.querySelector('iframe[src="' + window.EJS_AdUrl + '"]');
                     var adpage = adframe.contentWindow.document;
                     window.EJS_AdUrl = adframe.src;
                     if (!adpage) {
@@ -414,15 +538,13 @@
                 }
                 if (adBlockEnabled) {
                     window.EJS_adBlocked(url);
-                    
                 }
             }
 
             function loadJSON(url, callback) {
                 var xobj = new XMLHttpRequest();
                 xobj.overrideMimeType("application/json");
-                xobj.open('GET', url, true);
-
+                xobj.open("GET", url, true);
                 xobj.onreadystatechange = function () {
                     if (xobj.readyState === 4) {
                         if (xobj.status === 200) {
@@ -432,17 +554,15 @@
                         }
                     }
                 };
-
                 xobj.send();
             }
-
 
             function addOptions(select, options, default_option, github) {
                 for (const version in options) {
                     const option = document.createElement("option");
                     option.value = options[version];
-                    if (version == "stable"){
-                        option.textContent = "stable ("+github+")";
+                    if (version == "stable") {
+                        option.textContent = "stable (" + github + ")";
                     } else {
                         option.textContent = version;
                     }
@@ -458,6 +578,7 @@
             }
 
             function openSettings() {
+                loadCoreList();
                 document.getElementById("popup-settings").classList.add("show");
                 if (localStorage.getItem("pwa") == "false") {
                     checkinstall();
@@ -482,6 +603,7 @@
                 installButton.disabled = false;
                 console.log("Supported");
             });
+
             installButton.addEventListener("click", async () => {
                 if (!installPrompt) {
                     return;
@@ -490,6 +612,7 @@
                 console.log(`Install prompt was: ${result.outcome}`);
                 installPrompt = null;
             });
+
             function checkinstall(overide) {
                 console.log("Checking install");
                 if (navigator.userAgent.includes("Firefox") || (navigator.userAgent.includes("OPR") && !navigator.userAgent.includes("Mobile"))) {
@@ -497,7 +620,7 @@
                     installBoxText.innerHTML = "PWA's are not supported on this browser.";
                     return;
                 }
-                if (window.matchMedia('(display-mode: standalone)').matches || overide) {
+                if (window.matchMedia("(display-mode: standalone)").matches || overide) {
                     installButton.textContent = "Installed";
                     installButton.disabled = true;
                     installButton.style.display = "inline";
@@ -508,7 +631,7 @@
                         installBoxText.innerHTML = "PWA's are supported on this browser, but prompt is not supported.<br> Please install manually";
                         return;
                     }
-                    if ('getInstalledRelatedApps' in navigator) {
+                    if ("getInstalledRelatedApps" in navigator) {
                         navigator.getInstalledRelatedApps().then((relatedApps) => {
                             if (relatedApps.length > 0) {
                                 checkinstall(true);
@@ -518,10 +641,9 @@
                     }
                     installBoxText.innerHTML = "PWA is either already installed, or prompt is not supported on this browser.<br> Please install manually.<br>Note: PWA's are not supported in Incognito/Private mode.";
                 }
-                
             }
-            document.addEventListener('visibilitychange', function() {
-                window.matchMedia('(display-mode: standalone)').addListener(event => {
+            document.addEventListener("visibilitychange", function () {
+                window.matchMedia("(display-mode: standalone)").addListener((event) => {
                     if (event.matches) {
                         checkinstall(true);
                     }

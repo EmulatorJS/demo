@@ -10,16 +10,16 @@ const OFFLINE_FILES = [
     "img/screenshot.png",
     "img/mobile_screenshot.png",
     "https://cdn.emulatorjs.org/versions.json",
-
-    // Only cache stable assets offline...?
     "https://cdn.emulatorjs.org/stable/data/loader.js",
     "https://cdn.emulatorjs.org/stable/data/emulator.min.js",
     "https://cdn.emulatorjs.org/stable/data/emulator.min.css",
+    "https://cdn.emulatorjs.org/stable/data/cores/cores.json",
     "https://cdn.emulatorjs.org/stable/data/compression/extract7z.js",
     "https://cdn.emulatorjs.org/stable/data/compression/extractzip.js",
     "https://cdn.emulatorjs.org/stable/data/compression/libunrar.js",
-    "https://cdn.emulatorjs.org/stable/data/compression/libunrar.wasm"
+    "https://cdn.emulatorjs.org/stable/data/compression/libunrar.wasm",
 ];
+let cacheStatus = false;
 
 self.addEventListener("install", (event) => {
     event.waitUntil(
@@ -33,6 +33,34 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
     self.clients.claim();
+});
+
+self.addEventListener("message", async (event) => {
+    if (event.data && event.data.type === "CACHE_URLS") {
+        const urls = event.data.urls;
+        for (const url of urls) {
+            while (cacheStatus) {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+            cacheStatus = true;
+            try {
+                const cache = await caches.open(CACHE_NAME);
+                const response = await fetch(url);
+                if (response && response.status === 200) {
+                    await cache.put(url, response.clone());
+                }
+            } finally {
+                cacheStatus = false;
+            }
+        }
+    }
+    if (event.data && event.data.type === "REMOVE_URLS") {
+        const urls = event.data.urls;
+        const cache = await caches.open(CACHE_NAME);
+        for (const url of urls) {
+            await cache.delete(url);
+        }
+    }
 });
 
 function getCacheUrl(url) {
@@ -53,6 +81,10 @@ self.addEventListener("fetch", (event) => {
             let url = (requestURL.hostname === "cdn.emulatorjs.org") ? event.request.url : requestURL.pathname;
             const cache = await caches.open(CACHE_NAME);
             if (requestURL.hostname === "cdn.emulatorjs.org" && !OFFLINE_FILES.includes(event.request.url)) {
+                const cachedResponse = await caches.match(event.request);
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
                 return await fetch(event.request);
             }
             try {

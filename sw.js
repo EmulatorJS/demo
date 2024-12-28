@@ -11,7 +11,6 @@ const OFFLINE_FILES = [
     "img/mobile_screenshot.png",
     "https://cdn.emulatorjs.org/versions.json",
     "https://cdn.emulatorjs.org/stable/data/loader.js",
-    "https://cdn.emulatorjs.org/stable/data/version.json",
     "https://cdn.emulatorjs.org/stable/data/emulator.min.js",
     "https://cdn.emulatorjs.org/stable/data/emulator.min.css",
     "https://cdn.emulatorjs.org/stable/data/cores/cores.json",
@@ -64,17 +63,6 @@ self.addEventListener("message", async (event) => {
     }
 });
 
-function cacheUpdate(fileUrl) {
-    self.clients.matchAll().then((clients) => {
-        clients.forEach((client) => {
-            client.postMessage({
-                type: "CACHE_UPDATE",
-                url: fileUrl,
-            });
-        });
-    });
-}
-
 function getCacheUrl(url) {
     if (url === "/") {
         return "index.html";
@@ -90,34 +78,24 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
         (async () => {
             const requestURL = new URL(event.request.url);
-            let url = requestURL.hostname === "cdn.emulatorjs.org" ? event.request.url : requestURL.pathname;
+            let url = (requestURL.hostname === "cdn.emulatorjs.org") ? event.request.url : requestURL.pathname;
             const cache = await caches.open(CACHE_NAME);
-            if (event.request.url.startsWith("https://cdn.emulatorjs.org/stable/data/")) {
-                const cachedResponse = await cache.match(event.request);
+            if (requestURL.hostname === "cdn.emulatorjs.org" && !OFFLINE_FILES.includes(event.request.url)) {
+                const cachedResponse = await caches.match(event.request);
                 if (cachedResponse) {
                     return cachedResponse;
                 }
-                cacheStatus = true;
-                const networkResponse = await fetch(event.request);
-                if (networkResponse && networkResponse.status === 200) {
-                    cache.put(event.request, networkResponse.clone());
-                    cacheUpdate(event.request.url);
-                }
-                cacheStatus = false;
-                return networkResponse;
-            }
-            if (requestURL.hostname === "cdn.emulatorjs.org" && !OFFLINE_FILES.includes(event.request.url)) {
                 return await fetch(event.request);
             }
             try {
-                const req = url === "/versions" ? "https://cdn.emulatorjs.org/versions.json" : event.request;
+                const req = (url === "/versions") ? "https://cdn.emulatorjs.org/versions.json" : event.request;
                 const res = await fetch(req);
-                if (!res.status.toString().startsWith("2")) {
-                    throw new Error("status code not ok");
+                if (!res.status.toString().startsWith('2')) {
+                    throw new Error('status code not ok');
                 }
                 cache.put(getCacheUrl(url), res.clone());
                 return res;
-            } catch (e) {
+            } catch(e) {
                 url = getCacheUrl(url);
                 if (!OFFLINE_FILES.includes(url)) {
                     url = "404.html";

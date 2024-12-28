@@ -274,12 +274,14 @@
                 </div>
                 <div class="options">
                     <p id="offline-status">Offline Status: CHECKING</p>
-                    <div class="offline-cores">Offline Cores will only use the stable release.
-                        <br>Stable cores will auto cache on use. Select cores to cache:
-                        <form id="cores-form"></form>
+                    <div class="offline-cores">Offline Cores will only use the stable release. Latest stable release is: <span id="latest-stable"></span>
+                        <br>Select cores to cache:
+                        <form id="cores-form">
+                            <p>Loading...</p>
+                        </form>
                         <br />
-                        <button onclick="cacheListCores()">Cache Selected Cores</button>
-                        <button id="remove-version" onclick="removeallsaved()">Remove All</button>
+                        <button onclick="cacheCores()">Cache/Update Selected</button>
+                        <button onclick="removeAllsCores()">Remove All</button>
                     </div>
                     <div id="installbox">
                         <p id="installboxtext">Install PWA:</p>
@@ -301,15 +303,8 @@
                     .catch((error) => {
                         console.log("Service Worker registration failed:", error);
                     });
-                navigator.serviceWorker.addEventListener("message", (event) => {
-                    if (event.data.type === "CACHE_UPDATE") {
-                        savedCDNFiles(event.data.url);
-                        cacheCore();
-                    }
-                });
             }
 
-            const corePath = "https://cdn.emulatorjs.org/stable/data/cores/";
             loadJSON("/versions", (response) => {
                 if (!response) {
                     loadJSON("https://cdn.emulatorjs.org/versions.json", (resp) =>
@@ -322,74 +317,61 @@
                 }
             });
 
-            loadJSON(corePath + "cores.json", (response) => {
-                const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
-                const cores = JSON.parse(response);
-                for (const core of cores) {
-                    const label = document.createElement("label");
-                    const input = document.createElement("input");
-                    input.type = "checkbox";
-                    input.name = "core";
-                    input.value = core.name;
-                    if (cacheCores.includes(core.name)) {
-                        input.checked = true;
-                    }
-                    label.appendChild(input);
-                    label.appendChild(document.createTextNode(core.name));
-                    document.getElementById("cores-form").appendChild(label);
-                }
-            });
+            const corePath = "https://cdn.emulatorjs.org/stable/data/cores/";
 
-            function savedCDNFiles(url) {
-                const cachedFiles =
-                    JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
-                cachedFiles.push(url);
-                localStorage.setItem("cachedCDNFiles", JSON.stringify(cachedFiles));
+            function loadCoreList() {
+                loadJSON(corePath + "cores.json", (response) => {
+                    const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
+                    const cores = JSON.parse(response);
+                    document.getElementById("cores-form").innerHTML = "";
+                    for (const core of cores) {
+                        const label = document.createElement("label");
+                        const input = document.createElement("input");
+                        input.type = "checkbox";
+                        input.name = "core";
+                        input.value = core.name;
+                        if (cacheCores.some(arr => arr[0] === core.name)) {
+                            input.checked = true;
+                        }
+                        label.appendChild(input);
+                        const cachedCore = cacheCores.find(arr => arr[0] === core.name);
+                        const additionalText = cachedCore ? ` (${cachedCore[1]})` : "";
+                        label.appendChild(document.createTextNode(core.name + additionalText));
+                        document.getElementById("cores-form").appendChild(label);
+                    }
+                });  
             }
 
-            function cacheCore() {
-                const files = JSON.parse(localStorage.getItem("cachedCDNFiles")) || [];
-                const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
-                const cores = files.filter((item) => item.endsWith(".json")).map((item) => item.split("/").pop().split(".")[0]);
-                const urlsToCache = [];
-                for (core of cores) {
-                    if (cacheCores.includes(core)) {
-                        continue;
-                    }
-                    urlsToCache.push(corePath + "reports/" + core + ".json");
-                    urlsToCache.push(corePath + core + "-wasm.data");
-                    urlsToCache.push(corePath + core + "-thread-wasm.data");
-                    urlsToCache.push(corePath + core + "-legacy-wasm.data");
-                    urlsToCache.push(corePath + core + "-thread-legacy-wasm.data");
-                    cacheCores.push(core);
-                }
-                if (urlsToCache.length > 0) {
-                    cacheUrls(urlsToCache);
-                    localStorage.setItem("cachedCores", JSON.stringify(cacheCores));
-                }
-            }
-
-            function cacheListCores() {
+            function cacheCores() {
                 const cacheCores = JSON.parse(localStorage.getItem("cachedCores")) || [];
                 const cores = document.getElementsByName("core");
+                const stable = localStorage.getItem("latest-stable");
                 const urlsToCache = [];
                 const urlsToRemove = [];
                 for (const core of cores) {
-                    if (core.checked && !cacheCores.includes(core.value)) {
-                        urlsToCache.push(corePath + "reports/" + core + ".json");
+                    const cachedCore = cacheCores.find(arr => arr[0] === core.value);
+                    if (core.checked && (!cachedCore || cachedCore[1] !== stable)) {
+                        urlsToCache.push(corePath + "reports/" + core.value + ".json");
                         urlsToCache.push(corePath + core.value + "-wasm.data");
                         urlsToCache.push(corePath + core.value + "-thread-wasm.data");
                         urlsToCache.push(corePath + core.value + "-legacy-wasm.data");
                         urlsToCache.push(corePath + core.value + "-thread-legacy-wasm.data");
-                        cacheCores.push(core.value);
+                        if (cachedCore) {
+                            cachedCore[1] = stable;
+                        } else {
+                            cacheCores.push([core.value, stable]);
+                        }
                     }
-                    if (!core.checked && cacheCores.includes(core.value)) {
-                        urlsToRemove.push(corePath + "reports/" + core + ".json");
+                    if (!core.checked && cacheCores.some(arr => arr[0] === core.value)) {
+                        urlsToRemove.push(corePath + "reports/" + core.value + ".json");
                         urlsToRemove.push(corePath + core.value + "-wasm.data");
                         urlsToRemove.push(corePath + core.value + "-thread-wasm.data");
                         urlsToRemove.push(corePath + core.value + "-legacy-wasm.data");
                         urlsToRemove.push(corePath + core.value + "-thread-legacy-wasm.data");
-                        cacheCores.splice(cacheCores.indexOf(core.value), 1);
+                        const index = cacheCores.findIndex(arr => arr[0] === core.value);
+                        if (index !== -1) {
+                            cacheCores.splice(index, 1);
+                        }
                     }
                 }
                 if (urlsToCache.length > 0) {
@@ -402,12 +384,12 @@
                 closeSettings();
             }
 
-            function removeallsaved() {
+            function removeAllsCores() {
                 const cores = document.getElementsByName("core");
                 for (const core of cores) {
                     core.checked = false;
                 }
-                cacheListCores()
+                cacheCores()
             }
 
             function cacheUrls(urls) {
@@ -417,7 +399,6 @@
                         urls: urls,
                     });
                 }
-                urls.forEach(savedCDNFiles);
             }
 
             function removeUrls(urls) {
@@ -432,6 +413,8 @@
             function loadVersions(response) {
                 const version_select = document.getElementById("version-select");
                 var versions = JSON.parse(response);
+                document.getElementById("latest-stable").textContent = versions.github;
+                localStorage.setItem("latest-stable", versions.github);
                 version_select.innerHTML = "";
                 addOptions(version_select, versions.releases, versions.default, versions.github);
                 addOptions(version_select, versions.versions, versions.default);
@@ -474,6 +457,7 @@
                             "Sega Saturn": "segaSaturn",
                             "Atari 7800": "atari7800",
                             "Atari 2600": "atari2600",
+                            "Arcade": "arcade",
                             "NEC TurboGrafx-16/SuperGrafx/PC Engine": "pce",
                             "NEC PC-FX": "pcfx",
                             "SNK NeoGeo Pocket (Color)": "ngp",
@@ -526,7 +510,6 @@
                 window.EJS_pathtodata = cdn;
                 window.EJS_startOnLoaded = true;
                 window.EJS_AdUrl = "https://ads.emulatorjs.org/";
-                window.EJS_videoRotation = 0;
                 if (core === "psp") {
                     window.EJS_threads = true;
                 }
@@ -595,6 +578,7 @@
             }
 
             function openSettings() {
+                loadCoreList();
                 document.getElementById("popup-settings").classList.add("show");
                 if (localStorage.getItem("pwa") == "false") {
                     checkinstall();

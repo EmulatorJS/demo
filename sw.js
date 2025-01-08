@@ -1,4 +1,5 @@
 const CACHE_NAME = "offline-demo";
+const STABLE_EJS_VER = "4.2.1";
 const OFFLINE_FILES = [
     "index.html",
     "404.html",
@@ -43,7 +44,7 @@ function getCacheUrl(url) {
     } else if (url.startsWith("/")) {
         return url.slice(1);
     }
-    return url;
+    return url.replace(STABLE_EJS_VER, "stable");
 }
 
 self.addEventListener("fetch", (event) => {
@@ -52,23 +53,25 @@ self.addEventListener("fetch", (event) => {
             const requestURL = new URL(event.request.url);
             let url = (requestURL.hostname === "cdn.emulatorjs.org") ? event.request.url : requestURL.pathname;
             const cache = await caches.open(CACHE_NAME);
-            if (requestURL.hostname === "cdn.emulatorjs.org" && !OFFLINE_FILES.includes(event.request.url)) {
+            if (requestURL.hostname === "cdn.emulatorjs.org" && !OFFLINE_FILES.includes(event.request.url.replace(STABLE_EJS_VER, "stable")) && !event.request.url.includes("reports/")) {
                 return await fetch(event.request);
             }
             try {
                 const req = (url === "/versions") ? "https://cdn.emulatorjs.org/versions.json" : event.request;
                 const res = await fetch(req);
-                if (!res.status.toString().startsWith('2')) {
+                if (!res.ok && res.status !== 0) {
                     throw new Error('status code not ok');
                 }
                 cache.put(getCacheUrl(url), res.clone());
                 return res;
             } catch(e) {
+                console.log("error:", e);
                 url = getCacheUrl(url);
-                if (!OFFLINE_FILES.includes(url)) {
-                    url = "404.html";
+                let rv = await cache.match(url);
+                if (rv === undefined) {
+                    rv = await cache.match("404.html");
                 }
-                return await cache.match(url);
+                return rv;
             }
         })()
     );

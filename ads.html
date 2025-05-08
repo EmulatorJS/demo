@@ -40,10 +40,20 @@
         </div>
     </body>
     <script>
+        const ad = document.getElementById("ad");
+        const adblock = document.getElementById("adblock");
         if (window.credentialless === undefined) {
-            document.getElementById("adblock").style.display = "block";
+            adblock.style.display = "block";
         } else {
-            document.getElementById("ad").src = "https://ads.emulatorjs.org/";
-        } 
+            ad.src = "https://ads.emulatorjs.org/";
+            setTimeout(() => {
+                if (ad.readyState === null || ad.readyState === undefined) {
+                    adblock.style.display = "block";
+                }
+            }, 1000);
+        }
+        ad.onerror = function() {
+            adblock.style.display = "block";
+        };
     </script>
 </html>

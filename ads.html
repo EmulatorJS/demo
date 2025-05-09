@@ -46,11 +46,6 @@
             adblock.style.display = "block";
         } else {
             ad.src = "https://ads.emulatorjs.org/";
-            setTimeout(() => {
-                if (ad.readyState === null || ad.readyState === undefined) {
-                    adblock.style.display = "block";
-                }
-            }, 1000);
         }
         ad.onerror = function() {
             adblock.style.display = "block";

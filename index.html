@@ -340,7 +340,7 @@
                             "Commodore 64": "vice_x64",
                             "PlayStation Portable": "psp"
                         }
-                        if (window.cdn.includes("nightly")) {
+                        if (window.cdn && window.cdn.includes("nightly")) {
                             cores["dos"] = "dosbox_pure";
                         }
 

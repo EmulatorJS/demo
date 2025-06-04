@@ -340,6 +340,9 @@
                             "Commodore 64": "vice_x64",
                             "PlayStation Portable": "psp"
                         }
+                        if (window.cdn.includes("nightly")) {
+                            cores["dos"] = "dosbox_pure";
+                        }
 
                         const button = document.createElement("button")
                         const select = document.createElement("select")

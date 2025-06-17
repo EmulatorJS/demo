@@ -49,7 +49,7 @@
             }
 
             #box:hover, #box[drag] {
-                border-color: #38f;
+                border-color: #1AAFFF;
                 color: #ddd
             }
 
@@ -211,6 +211,65 @@
             .hide {
                 display: none !important;
             }
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 51px;
+                height: 25px;
+                margin: 0 0.5em;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 18px;
+                width: 18px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            input:checked + .slider {
+                background-color: #1AAFFF;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px #1AAFFF;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+
+            .slider.round {
+                border-radius: 34px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
         </style>
     </head>
     <body>
@@ -244,6 +303,7 @@
                     <h1>Settings</h1>
                 </div>
                 <div class="options">
+                    <p>Enable Debuging: <label class="switch"><input type="checkbox" id="debug"/><span class="slider round"></span></label></p>
                     <p id="offline-status">Offline Status: CHECKING</p>
                     <p>Offline Cores will be available soon.</p>
                     <p class="hide">Remove All Saved Versions: <button id="remove-version" onclick="removeallsaved()">Remove All</button></p>
@@ -280,6 +340,27 @@
                     window.cdn = "https://cdn.emulatorjs.org/" + version_select[version_select.selectedIndex].value + "data/";
                 });
             }
+            let enableDebug = false;
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const debugCheckbox = document.getElementById("debug");
+            if (parseInt(urlParams.get('debug')) === 1 || urlParams.get('debug') === "true") {
+                enableDebug = true;
+                console.log("Debug is enabled");
+                debugCheckbox.checked = true;
+            } else {
+                console.log("Debug is disabled");
+                debugCheckbox.checked = false;
+            }
+            debugCheckbox.addEventListener("change", () => {
+                enableDebug = debugCheckbox.checked;
+                console.log("Debug is now " + (enableDebug ? "enabled" : "disabled"));
+                if (enableDebug) {
+                    history.replaceState(null, '', '?debug=1');
+                } else {
+                    history.replaceState(null, '', window.location.pathname);
+                }
+            });
             input.addEventListener("change", async () => {
                 const url = input.files[0];
                 const parts = input.files[0].name.split(".");
@@ -389,6 +470,7 @@
                 window.EJS_pathtodata = cdn;
                 window.EJS_startOnLoaded = true;
                 window.EJS_AdUrl = "ads.html";
+                window.EJS_DEBUG_XX = enableDebug;
                 if (core === "psp" || core === "dosbox_pure") {
                     window.EJS_threads = true;
                 }

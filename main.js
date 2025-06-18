@@ -14,7 +14,6 @@ function loadJSON(url, callback) {
         var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
         xobj.open('GET', url, true);
-
         xobj.onreadystatechange = function () {
             if (xobj.readyState === 4) {
                 if (xobj.status === 200) {
@@ -24,7 +23,6 @@ function loadJSON(url, callback) {
                 }
             }
         };
-
         xobj.send();
     }
 }
@@ -43,7 +41,6 @@ function loadVersions(response) {
 }
 
 function setCDNPath(option) {
-    console.log("Setting CDN path to:", option);
     if (option === "custom") {
         console.log("Using custom path");
         window.cdn = localStorage.getItem("custom_cdn") || "https://cdn.emulatorjs.org/stable/data/";

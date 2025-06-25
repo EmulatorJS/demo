@@ -26,12 +26,17 @@ let STABLE_EJS_VER = "4.2.2"; // Fallback version if the request fails
 
 importScripts('/main.js');
 
-loadJSON("https://cdn.emulatorjs.org/versions.json", (response) => {
-    if (response) {
-        STABLE_EJS_VER = JSON.parse(response).github;
-    }
-    console.log("Stable EmulatorJS version:", STABLE_EJS_VER);
-});
+try {
+    loadJSON("https://cdn.emulatorjs.org/versions.json", (response) => {
+        if (response) {
+            STABLE_EJS_VER = JSON.parse(response).github;
+        }
+        console.log("Stable EmulatorJS version:", STABLE_EJS_VER);
+    });
+} catch (e) {
+    console.warn("Failed to get Stable EmulatorJS version:", e, "Using fallback version:", STABLE_EJS_VER);
+}
+
 
 self.addEventListener("install", (event) => {
     event.waitUntil(

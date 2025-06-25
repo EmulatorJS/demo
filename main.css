@@ -135,6 +135,7 @@ button:hover {
     min-width: 30%;
     width: min-content;
     position: fixed;
+    overflow-x: auto;
 }
 
 .show {
@@ -183,7 +184,7 @@ button:hover {
 }
 
 .popup .options p {
-    margin: 0.9em 0;
+    margin: 0.5em 0;
     font-size: 18px;
 }
 
@@ -202,27 +203,31 @@ button:hover {
 .buttonbox {
     display: inline-flex;
     align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 0.2em;
 }
 
-.buttonbox.last p {
+.buttonbox.last {
     margin-bottom: 0 !important;
 }
 
 .buttonbox p {
-    margin-top: 0 !important;
+    margin: 0 !important;
 }
 
 .buttonbox select,
 .buttonbox input[type="text"],
 .buttonbox button {
     padding: 0 0.4em;
-    margin: 0 0.5em;;
+    margin: 0.5em;;
     width: auto;
     font-size: 14px;
     height: 2em;
 }
 
-button:disabled {
+.buttonbox button:disabled,
+.buttonbox select:disabled,
+.buttonbox input[type="text"]:disabled {
     background-color: #666;
     color: #aaa;
     cursor: not-allowed;
@@ -237,7 +242,7 @@ button:disabled {
     display: inline-block;
     width: 51px;
     height: 25px;
-    margin: 0 0.5em;
+    margin: 0.5em;
 }
 
 .switch input {
@@ -291,3 +296,4 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+

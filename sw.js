@@ -22,7 +22,7 @@ const OFFLINE_FILES = [
     "https://cdn.emulatorjs.org/stable/data/compression/libunrar.js",
     "https://cdn.emulatorjs.org/stable/data/compression/libunrar.wasm"
 ];
-let STABLE_EJS_VER = "4.2.2"; // Fallback version if the request fails
+let STABLE_EJS_VER = "4.2.3"; // Fallback version if the request fails
 
 importScripts('/main.js');
 

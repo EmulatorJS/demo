@@ -1,7 +1,8 @@
 const CACHE_NAME = "offline-demo";
-const STABLE_EJS_VER = "4.2.1";
 const OFFLINE_FILES = [
     "index.html",
+    "main.js",
+    "main.css",
     "404.html",
     "favicon.ico",
     "manifest.json",
@@ -21,6 +22,21 @@ const OFFLINE_FILES = [
     "https://cdn.emulatorjs.org/stable/data/compression/libunrar.js",
     "https://cdn.emulatorjs.org/stable/data/compression/libunrar.wasm"
 ];
+let STABLE_EJS_VER = "4.2.3"; // Fallback version if the request fails
+
+importScripts('/main.js');
+
+try {
+    loadJSON("https://cdn.emulatorjs.org/versions.json", (response) => {
+        if (response) {
+            STABLE_EJS_VER = JSON.parse(response).github;
+        }
+        console.log("Stable EmulatorJS version:", STABLE_EJS_VER);
+    });
+} catch (e) {
+    console.warn("Failed to get Stable EmulatorJS version:", e, "Using fallback version:", STABLE_EJS_VER);
+}
+
 
 self.addEventListener("install", (event) => {
     event.waitUntil(

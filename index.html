@@ -59,7 +59,21 @@
         <script src="main.js"></script>
         <script>
             if ("serviceWorker" in navigator) {
-                const req = navigator.serviceWorker.register("sw.js");
+                //const req = navigator.serviceWorker.register("sw.js");
+                async function unregisterServiceWorkers() {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    
+                    for (let registration of registrations) {
+                        const success = await registration.unregister();
+                        if (success) {
+                            console.log("Service Worker unregistered successfully.");
+                        } else {
+                            console.log("Failed to unregister Service Worker.");
+                        }
+                    }
+                }
+            
+                unregisterServiceWorkers();
             };
 
             loadJSON("/versions", (response) => {
